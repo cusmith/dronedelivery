@@ -1,0 +1,11 @@
+WELCOME TO DRONE DELIVERY SERVICE!!!
+
+{% if pending_invoice_items %}
+    <ul>
+    {% for item in pending_invoice_items %}
+        {{ item.inventory_type.product_name }}
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No pending invoice items.</p>
+{% endif %}
