@@ -8,3 +8,6 @@ def index(request):
 	pending_invoice_items = InvoiceItem.objects.filter(invoice__status='pending')
 	context = {'pending_invoice_items': pending_invoice_items}
 	return render(request, 'app/index.html', context)
+
+def css(request):
+	return request.path.__str__()
