@@ -1,0 +1,23 @@
+{% extends "app/app-base.html" %}
+
+{% block title %}log in to your account{% endblock %}
+{% block short_title %}login{% endblock %}
+
+{% block content %}
+	
+	<div class='login-container'>
+		<form>
+			<input class='input-box' type='text' name='username' value='username'><br>
+			<input class='input-box' type='password' name='password' value='password'><br>
+			<input class='input-box' type="submit" name='submit' value='log in'>
+		</form>
+		<p>
+			Don't have an account?<br>
+			<a href="register">Register here.</a>
+		</p>
+
+	</div>
+
+
+{% endblock %}
+

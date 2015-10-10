@@ -9,5 +9,12 @@ def index(request):
 	context = {'pending_invoice_items': pending_invoice_items}
 	return render(request, 'app/index.html', context)
 
+def login(request):
+	# Should check for existing login and redirect to account page if found
+	return render(request, 'app/login.html', {})
+
 def css(request):
-	return HttpResponse(request.path.__str__())
+	return render(request, request.path[1:], {},content_type='text/css')
+
+def error404(request):
+	return render(request, 'app/error404.html', {'pagepath':request.path})
