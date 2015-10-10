@@ -1,11 +1,21 @@
-WELCOME TO DRONE DELIVERY SERVICE!!!
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Drone Delivery Service</title>
+</head>
+<body>
 
-{% if pending_invoice_items %}
-    <ul>
-    {% for item in pending_invoice_items %}
-        {{ item.inventory_type.product_name }} for {{ item.invoice.user.name }} flown by Drone: [{{ item.drone.id }}]
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No pending invoice items.</p>
-{% endif %}
+	<h1>WELCOME TO DRONE DELIVERY SERVICE!!!</h1>
+
+	{% if pending_invoice_items %}
+		<ul>
+		{% for item in pending_invoice_items %}
+			{{ item.inventory_type.product_name }} for {{ item.invoice.user.name }} flown by Drone: [{{ item.drone.id }}]
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>No pending invoice items.</p>
+	{% endif %}
+
+</body>
+</html>
