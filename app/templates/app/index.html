@@ -3,7 +3,7 @@ WELCOME TO DRONE DELIVERY SERVICE!!!
 {% if pending_invoice_items %}
     <ul>
     {% for item in pending_invoice_items %}
-        {{ item.inventory_type.product_name }}
+        {{ item.inventory_type.product_name }} for {{ item.invoice.user.name }} flown by Drone: [{{ item.drone.id }}]
     {% endfor %}
     </ul>
 {% else %}
