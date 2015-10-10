@@ -10,4 +10,4 @@ def index(request):
 	return render(request, 'app/index.html', context)
 
 def css(request):
-	return request.path.__str__()
+	return HttpResponse(request.path.__str__())
