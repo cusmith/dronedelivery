@@ -13,20 +13,33 @@ body {
 	z-index: 1;
 	width: 100%;
 	padding: 0.2em;
-	padding-left: 300px;
 	background-color: #f0f0f0;
 	border-bottom: 1px solid #b0b0b0;
 }
 
-.title {
+.title-bar-content {
+	margin-left:300px;
+	margin-right:300px;
+}
+
+h1 {
 	font-size: 3em;
 	font-weight: lighter;
 	margin: 0.2em;
+}
+
+.title {
 	color: #505050;
+	float: left;
 }
 
 .sub-title {
 	color: #b0b0b0;
+}
+
+.session-status-box {
+	margin:1.5em;
+	float: right;
 }
 
 .content {
@@ -51,10 +64,13 @@ body {
 }
 
 .input-box {
-	width: 100%;
 	margin: 3px;
 	padding: 3px;
 	border: 1px solid #b0b0b0;
 	border-radius: 3px;
 	background-color: #ffffff;
+}
+
+.input-box:focus {
+	box-shadow: 0px 0px 2px #888888;
 }

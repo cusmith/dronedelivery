@@ -8,13 +8,22 @@
 </head>
 <body>
 	<div class='title-bar'>
-		<h1 class='title'>
-			drone delivery service 
-			<span class='sub-title'>
-				| 
-				{% block short_title %}{% endblock %}
-			</span>
-		</h1>
+		<div class='title-bar-content'>
+			<h1 class='title'>
+				drone delivery service 
+				<span class='sub-title'>
+					| 
+					{% block short_title %}{% endblock %}
+				</span>
+			</h1>
+			<div class='session-status-box'>
+				{% if logged_in %}
+
+				{% else %}
+					<a href='login'>Log in.</a>
+				{% endif %}
+			</div>
+		</div>
 	</div>
 	<div class='content'>
 		{% block content %}{% endblock %}

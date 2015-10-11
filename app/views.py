@@ -11,6 +11,13 @@ def index(request):
 
 def login(request):
 	# Should check for existing login and redirect to account page if found
+
+	if request.method == 'POST':
+		response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'account'
+		return response
+
 	return render(request, 'app/login.html', {})
 
 def css(request):
