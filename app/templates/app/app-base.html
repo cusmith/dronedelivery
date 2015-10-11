@@ -4,18 +4,15 @@
 	<meta charset='utf-8'>
 	<title>{% block title %}{% endblock %} | drone delivery service</title>
 	<link rel="stylesheet" type="text/css" href="app.css"></link>
-	<link href='https://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:500,400,100' rel='stylesheet' type='text/css'>
 </head>
 <body>
 	<div class='title-bar'>
 		<div class='title-bar-content'>
-			<h1 class='title'>
-				drone delivery service 
-				<span class='sub-title'>
-					| 
-					{% block short_title %}{% endblock %}
-				</span>
-			</h1>
+			<div class='title'>
+				<span class='h1'>drone delivery service </span>
+				<span class='h2'>| {% block short_title %}{% endblock %}</span>
+			</div>
 			<div class='session-status-box'>
 				{% if logged_in %}
 
@@ -25,8 +22,14 @@
 			</div>
 		</div>
 	</div>
-	<div class='content'>
-		{% block content %}{% endblock %}
+	<div class='main'>
+		<div class='content-container'>
+			<div class='content'>
+				{% block content %}{% endblock %}
+			</div>
+		</div>
+		<div class='center-column'>
+		</div>
 	</div>
 </body>
 </html>

@@ -1,76 +1,97 @@
 * {
-	font-family: 'Raleway', sans-serif;
-}
+  font-family: "Raleway", sans-serif;
+  color: #202020; }
 
-body {
-	margin: 0px;
-	font-size: 12px;
-	background-color:#f8f8f8;
-}
-
-.title-bar {
-	position: fixed;
-	z-index: 1;
-	width: 100%;
-	padding: 0.2em;
-	background-color: #f0f0f0;
-	border-bottom: 1px solid #b0b0b0;
-}
-
-.title-bar-content {
-	margin-left:300px;
-	margin-right:300px;
-}
+.h1, h1 {
+  font-size: 3em;
+  font-weight: lighter;
+  color: #505050; }
 
 h1 {
-	font-size: 3em;
-	font-weight: lighter;
-	margin: 0.2em;
-}
+  margin: 0.2em; }
+
+.h2, h2 {
+  font-size: 3em;
+  font-weight: lighter;
+  color: #b0b0b0; }
+
+h2 {
+  margin: 0.2em; }
+
+a:link, a:visited {
+  font-weight: 500; }
+
+:root {
+  font-size: 12px;
+  font-weight: 400; }
+
+body {
+  margin: 0px;
+  background-color: #f8f8f8; }
+
+.title-bar {
+  position: fixed;
+  z-index: 1;
+  width: 100%;
+  top: 0px;
+  height: 4rem;
+  background-color: #f0f0f0;
+  border-bottom: 1px solid #b0b0b0; }
+
+.title-bar-content {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1em;
+  padding-right: 1em; }
 
 .title {
-	color: #505050;
-	float: left;
-}
-
-.sub-title {
-	color: #b0b0b0;
-}
+  float: left; }
 
 .session-status-box {
-	margin:1.5em;
-	float: right;
-}
+  margin: 1.5em;
+  float: right; }
+
+.main {
+  margin-top: 4rem; }
+
+.center-column {
+  position: fixed;
+  z-index: -1;
+  width: 800px;
+  top: 0px;
+  left: calc((100% -  800px ) / 2);
+  height: 100vh;
+  background-color: #ffffff;
+  border-left: 1px solid #b0b0b0;
+  border-right: 1px solid #b0b0b0; }
+
+.content-container {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto; }
 
 .content {
-	background-color: #ffffff;
-	position: relative;
-	top: 4em;
-	margin-left:300px;
-	margin-right:300px;
-	border-left: 1px solid #b0b0b0;
-	border-right: 1px solid #b0b0b0;
-	border-bottom: 1px solid #b0b0b0;
-	padding: 1em;
-}
+  position: relative;
+  padding: 1em; }
+
+.rounded-box, .input-box {
+  margin: 3px;
+  padding: 3px;
+  border: 1px solid #b0b0b0;
+  border-radius: 3px;
+  background-color: #ffffff; }
 
 .login-container {
-	width: 200px;
-	text-align: center;
-	margin-top: 200px;
-	margin-bottom: 200px;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.input-box {
-	margin: 3px;
-	padding: 3px;
-	border: 1px solid #b0b0b0;
-	border-radius: 3px;
-	background-color: #ffffff;
-}
+  position: fixed;
+  top: calc(50% + 4rem );
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, calc(-1 * ( 4rem  / 2) - 50%));
+  width: 200px;
+  text-align: center; }
 
 .input-box:focus {
-	box-shadow: 0px 0px 2px #888888;
-}
+  box-shadow: 0px 0px 2px #b0b0b0; }
+
+/*# sourceMappingURL=app.css.map */
