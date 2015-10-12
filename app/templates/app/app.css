@@ -3,7 +3,7 @@
   color: #202020; }
 
 .h1, h1 {
-  font-size: 3em;
+  font-size: 2em;
   font-weight: lighter;
   color: #505050; }
 
@@ -11,7 +11,7 @@ h1 {
   margin: 0.2em; }
 
 .h2, h2 {
-  font-size: 3em;
+  font-size: 2em;
   font-weight: lighter;
   color: #b0b0b0; }
 
@@ -22,7 +22,7 @@ a:link, a:visited {
   font-weight: 500; }
 
 :root {
-  font-size: 85%;
+  font-size: 75%;
   font-weight: 400; }
 
 body {
@@ -34,7 +34,7 @@ body {
   z-index: 1;
   width: 100%;
   top: 0px;
-  height: 4rem;
+  height: 3rem;
   background-color: #f0f0f0;
   border-bottom: 1px solid #b0b0b0; }
 
@@ -48,12 +48,20 @@ body {
 #title {
   float: left; }
 
+.title-segment, .title-collapse, .title-no-collapse {
+  float: left;
+  overflow: hidden;
+  transition: width 1s; }
+
+.title-collapse {
+  width: auto; }
+
 #session-status-box {
-  padding: 1.5em;
+  padding: 1em;
   float: right; }
 
 #main {
-  margin-top: 4rem; }
+  margin-top: 3rem; }
 
 #center-column {
   position: fixed;
@@ -84,10 +92,10 @@ body {
 
 #login-container {
   position: fixed;
-  top: calc(50% + 4rem );
+  top: calc(50% + 3rem );
   left: 50%;
   margin-right: -50%;
-  transform: translate(-50%, calc(-1 * ( 4rem  / 2) - 50%));
+  transform: translate(-50%, calc(-1 * ( 3rem  / 2) - 50%));
   width: 200px;
   text-align: center; }
 

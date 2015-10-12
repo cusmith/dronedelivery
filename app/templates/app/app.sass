@@ -1,6 +1,6 @@
 
 $primary-font:			'Raleway', sans-serif
-$primary-font-size:		85%
+$primary-font-size:		75%
 $primary-font-weight:	400
 
 $link-font-weight:		500
@@ -13,7 +13,7 @@ $dark-text-color:		#202020
 $medium-text-color:		#505050
 $light-text-color:		#b0b0b0
 
-$title-bar-height:		4rem
+$title-bar-height:		3rem
 $content-max-width:		800px
 
 =centered-box($width)
@@ -26,7 +26,7 @@ $content-max-width:		800px
 	color: $dark-text-color
 
 .h1
-	font-size: 3em
+	font-size: 2em
 	font-weight: lighter
 	color: $medium-text-color
 
@@ -35,7 +35,7 @@ h1
 	margin: 0.2em
 
 .h2
-	font-size: 3em
+	font-size: 2em
 	font-weight: lighter
 	color: $light-text-color
 
@@ -73,9 +73,20 @@ body
 #title 
 	float: left
 
+.title-segment
+	float: left
+	overflow: hidden
+	transition: width 1s
+
+.title-collapse
+	@extend .title-segment
+	width: auto
+
+.title-no-collapse
+	@extend .title-segment
 
 #session-status-box 
-	padding: 1.5em
+	padding: 1em
 	float: right
 
 #main
