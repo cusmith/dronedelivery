@@ -1,3 +1,6 @@
+///////////////////////////////////////////////////////////////////////////////
+//// General Site Rules ///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 $primary-font:			'Raleway', sans-serif
 $primary-font-size:		75%
@@ -12,9 +15,6 @@ $content-area-color:	#ffffff
 $dark-text-color:		#202020
 $medium-text-color:		#505050
 $light-text-color:		#b0b0b0
-
-$title-bar-height:		3rem
-$content-max-width:		800px
 
 =centered-box($width)
 	max-width: $width
@@ -51,6 +51,28 @@ a:link, a:visited
 	font-size: $primary-font-size
 	font-weight: $primary-font-weight
 
+.rounded-box
+	margin: 3px
+	padding: 3px
+	border: 1px solid $light-text-color
+	border-radius: 3px
+	background-color: $content-area-color
+
+.input-box 
+	@extend .rounded-box
+
+.input-box:focus 
+	box-shadow: 0px 0px 2px $light-text-color
+
+///////////////////////////////////////////////////////////////////////////////
+//// App Base Rules ///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+$title-bar-height:		3rem
+$content-max-width:		66rem
+$content-inner-width:	42rem
+$content-padding:		1em
+
 body
 	margin: 0px
 	background-color: $background-color
@@ -69,6 +91,7 @@ body
 	+centered-box($content-max-width)
 	padding-left: 1em
 	padding-right: 1em
+	max-height: $title-bar-height
 
 #title 
 	float: left
@@ -86,7 +109,7 @@ body
 	@extend .title-segment
 
 #session-status-box 
-	padding: 1em
+	padding-top: ($title-bar-height - 1rem) / 2
 	float: right
 
 #main
@@ -103,21 +126,19 @@ body
 	border-left: 1px solid $light-text-color
 	border-right: 1px solid $light-text-color
 
-$content-padding: 1em
-
 #content-container
 	+centered-box($content-max-width)
 
 #content
 	position: relative
-	padding: 1em
+	padding: $content-padding
 
-.rounded-box
-	margin: 3px
-	padding: 3px
-	border: 1px solid $light-text-color
-	border-radius: 3px
-	background-color: $content-area-color
+#content-inner
+	+centered-box($content-inner-width)
+
+///////////////////////////////////////////////////////////////////////////////
+//// Login Page Rules /////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
 #login-container
 	position: fixed
@@ -128,12 +149,27 @@ $content-padding: 1em
 	width: 200px
 	text-align: center
 
+///////////////////////////////////////////////////////////////////////////////
+//// Registration Page Rules //////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
 
-.input-box 
-	@extend .rounded-box
+$register-item-margin:	0.5rem
+$register-item-width:	$content-inner-width - ($register-item-margin * 8)
 
+.registration-item
+	float: left
+	min-height: 3rem
+	width: 100%
+	max-width: $register-item-width
+	min-width: $register-item-width / 2
 
-.input-box:focus 
-	box-shadow: 0px 0px 2px $light-text-color
+.registration-item-half
+	@extend .registration-item
+	max-width: $register-item-width / 2
 
+.registration-input
+	@extend .input-box
+	width: unquote("calc(100% - ")$register-item-margin*4 unquote(")")
 
+.registration-item-desc
+	padding-top: 1.5rem

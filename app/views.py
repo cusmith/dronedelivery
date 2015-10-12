@@ -20,6 +20,17 @@ def login(request):
 
 	return render(request, 'app/login.html', {})
 
+def register(request):
+	# Should check for existing login and prompt for logout if found
+
+	if request.method == 'POST':
+		response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'account'
+		return response
+	
+	return render(request, 'app/register.html', {})
+
 def css(request):
 	return render(request, request.path[1:], {},content_type='text/css')
 
