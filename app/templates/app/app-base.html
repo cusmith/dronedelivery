@@ -5,15 +5,35 @@
 	<title>{% block title %}{% endblock %} | drone delivery service</title>
 	<link rel="stylesheet" type="text/css" href="app.css"></link>
 	<link href='https://fonts.googleapis.com/css?family=Raleway:500,400,100' rel='stylesheet' type='text/css'>
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript">
+	var long_width = 0;
+	var long_title  = "drone delivery service ";
+	var short_title = "dds ";
+	var resizeHandler = function() {
+		if ($("#session-status-box").outerWidth() + long_width > $("#title-bar-content").width()) {
+			$("#title-bar-title").text(short_title);
+		} else {
+			$("#title-bar-title").text(long_title);
+		}
+	};
+	$(document).ready(function() {
+		$("#title-bar-title").text(long_title);
+		long_width = $("#title").outerWidth();
+		resizeHandler();
+		$(window).resize(resizeHandler);
+	});
+
+	</script>
 </head>
 <body>
-	<div class='title-bar'>
-		<div class='title-bar-content'>
-			<div class='title'>
-				<span class='h1'>drone delivery service </span>
+	<div id='title-bar'>
+		<div id='title-bar-content'>
+			<div id='title'>
+				<span class='h1' id='title-bar-title'></span>
 				<span class='h2'>| {% block short_title %}{% endblock %}</span>
 			</div>
-			<div class='session-status-box'>
+			<div id='session-status-box'>
 				{% if logged_in %}
 
 				{% else %}
@@ -22,13 +42,13 @@
 			</div>
 		</div>
 	</div>
-	<div class='main'>
-		<div class='content-container'>
-			<div class='content'>
+	<div id='main'>
+		<div id='content-container'>
+			<div id='content'>
 				{% block content %}{% endblock %}
 			</div>
 		</div>
-		<div class='center-column'>
+		<div id='center-column'>
 		</div>
 	</div>
 </body>

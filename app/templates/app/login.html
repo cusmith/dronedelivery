@@ -5,7 +5,7 @@
 
 {% block content %}
 
-	<div class='login-container'>
+	<div id='login-container'>
 		<form method='post'>{% csrf_token %}
 			<input id='username-box' class='input-box' type='text' name='username' placeholder='username'><br>
 			<input id='password-box' class='input-box' type='password' name='password' placeholder='password'><br>
