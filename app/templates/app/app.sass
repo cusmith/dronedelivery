@@ -76,6 +76,8 @@ $content-padding:		1em
 body
 	margin: 0px
 	background-color: $background-color
+	background-image: url("/static/app/bg.png")
+	background-position: center top
 
 #title-bar
 	position: fixed
@@ -123,6 +125,7 @@ body
 	left: unquote("calc((100% - ")$content-max-width unquote(") / 2)")
 	height: 100vh
 	background-color: $content-area-color
+	opacity: 0.8
 	border-left: 1px solid $light-text-color
 	border-right: 1px solid $light-text-color
 
