@@ -16,6 +16,8 @@ $dark-text-color:		#202020
 $medium-text-color:		#505050
 $light-text-color:		#b0b0b0
 
+$hover-transition-time:	0.3s
+
 =centered-box($width)
 	max-width: $width
 	margin-left: auto
@@ -43,6 +45,8 @@ h2
 	@extend .h2
 	margin: 0.2em
 
+strong
+	color: inherit
 
 a:link, a:visited
 	font-weight: $link-font-weight
@@ -81,7 +85,7 @@ body
 
 #title-bar
 	position: fixed
-	z-index: 1
+	z-index: 3
 	width: 100%
 	top: 0px
 	height: $title-bar-height
@@ -91,9 +95,11 @@ body
 
 #title-bar-content 
 	+centered-box($content-max-width)
+	position: relative
 	padding-left: 1em
 	padding-right: 1em
 	max-height: $title-bar-height
+	overflow-y: hidden
 
 #title 
 	float: left
@@ -101,18 +107,19 @@ body
 .title-segment
 	float: left
 	overflow: hidden
-	transition: width 1s
+	transition: max-width 1s
 
 .title-collapse
 	@extend .title-segment
-	width: auto
+	max-width: 20rem
 
 .title-no-collapse
 	@extend .title-segment
 
 #session-status-box 
-	padding-top: ($title-bar-height - 1rem) / 2
-	float: right
+	position: absolute
+	top: ($title-bar-height - 1rem) / 2
+	right: 2rem
 
 #main
 	margin-top: $title-bar-height
@@ -176,3 +183,63 @@ $register-item-width:	$content-inner-width - ($register-item-margin * 8)
 
 .registration-item-desc
 	padding-top: 1.5rem
+
+///////////////////////////////////////////////////////////////////////////////
+//// Inventory Page Rules /////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+$inventory-item-height:	10rem
+
+#inventory-list
+	padding: 0px
+	list-style-type: none
+	position: relative
+
+.inventory-item-expand
+	position: absolute
+	width: unquote("calc(100% - ")3rem unquote(")")
+	height: 3rem
+	z-index: 1
+
+.inventory-item-min
+	float: right
+	text-decoration: none
+	font-size: 1.5em
+	font-weight: lighter !important
+	color: $light-text-color
+	transition: opacity $hover-transition-time
+	opacity: 0
+
+.inventory-item:target .inventory-item-min
+	opacity: 1
+
+.inventory-item
+	@extend .rounded-box
+	transition: color $hover-transition-time
+	color: $medium-text-color
+	transition: background-color $hover-transition-time
+	background-color: transparent
+	padding: 0.5em
+	display: block
+	z-index: 2
+
+.inventory-item:hover, .inventory-item-expand:hover + .inventory-item, .inventory-item:target
+	color: $dark-text-color
+	background-color: $content-area-color
+
+.item-description
+	transition: height 0s $hover-transition-time
+	height: 100rem
+	overflow-y: auto
+	padding: 0.5em
+
+.item-description-container
+	transition: max-height $hover-transition-time 0s
+	overflow: hidden
+	max-height: 0rem
+
+.inventory-item:target .item-description
+	height: $inventory-item-height
+
+.inventory-item:target .item-description-container
+	max-height: $inventory-item-height

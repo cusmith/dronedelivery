@@ -17,17 +17,19 @@
 	var resizeHandler = function() {
 		if ($("#session-status-box").outerWidth() + long_width > $("#title-bar-content").width() - 10) {
 			$(".title-collapse").each(function (i,e) {
-				$(e).width(0);
+				//$(e).width(0);
+				$(e).css("max-width",0);
 			});
 		} else {
 			$(".title-collapse").each(function (i,e) {
-				$(e).width(title_collapse_lengths[i]);
+				//$(e).width(title_collapse_lengths[i]);
+				$(e).css("max-width",title_collapse_lengths[i]);
 			});
 		}
 	};
 	$(document).ready(function() {
 		$(".title-collapse").each(function (i,e) {
-			title_collapse_lengths[i] = $(e).width();
+			title_collapse_lengths[i] = $(e).outerWidth();
 		});
 		long_width = $("#title").outerWidth();
 		resizeHandler();

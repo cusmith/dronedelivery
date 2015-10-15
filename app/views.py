@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from app.models import InvoiceItem, Invoice
+from app.models import InvoiceItem, Invoice, InventoryType
 
 
 def index(request):
@@ -28,8 +28,16 @@ def register(request):
 		response.status_code = 303
 		response['location'] = 'account'
 		return response
-	
+
 	return render(request, 'app/register.html', {})
+
+def account(request):
+	return render(request, 'app/account.html', {})
+
+def inventory(request):
+	inventory_items = InventoryType.objects.all()
+	context = {'inventory_items': inventory_items}
+	return render(request, 'app/inventory.html', context)
 
 def css(request):
 	return render(request, request.path[1:], {},content_type='text/css')
