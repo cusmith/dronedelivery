@@ -1,0 +1,60 @@
+{% extends "app/app-base.html" %}
+
+{% block title %}inventory{% endblock %}
+{% block short_title %}inventory{% endblock %}
+
+{% block content %}
+	
+<!--
+	{% if inventory_items %}
+		<ul>
+		{% for item in inventory_items %}
+			{{ item.product_name }} ({{ item.stock_count }})
+		{% endfor %}
+		</ul>
+	{% else %}
+		<p>No items availible.</p>
+	{% endif %}
+-->
+<ul id='inventory-list'>
+	<a href='#item-pool-table' class='inventory-item-expand'></a>
+	<div class='inventory-item' id='item-pool-table'>
+		<strong>Pool Table</strong>
+		<a href="#" class='inventory-item-min'>[-]</a><br>
+		4 in stock
+		<div class='item-description-container'>
+			<div class='item-description'>
+				Description:<br><br>
+				{% lorem %}
+			</div>
+		</div>
+	</div>
+	<a href='#item-ping-pong-ball' class='inventory-item-expand'></a>
+	<div class='inventory-item' id='item-ping-pong-ball'>
+		<strong>Ping Pong Ball</strong>
+		<a href="#" class='inventory-item-min'>[-]</a><br>
+		9452 in stock
+		<div class='item-description-container'>
+			<div class='item-description'>
+				Description:<br><br>
+				{% lorem %}
+			</div>
+		</div>
+	</div>
+	<a href='#item-drone' class='inventory-item-expand'></a>
+	<div class='inventory-item' id='item-drone'>
+		<strong>Drone</strong>
+		<a href="#" class='inventory-item-min'>[-]</a><br>
+		out of stock
+		<div class='item-description-container'>
+			<div class='item-description'>
+				Description:<br><br>
+				{% lorem %}
+			</div>
+		</div>
+	</div>
+</ul>
+
+
+{% endblock %}
+

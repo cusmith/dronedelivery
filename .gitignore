@@ -1,1 +1,6 @@
 *.pyc
+*.sublime-project
+*.sublime-workspace
+*.sqlite3
+*.css.map
+.sass-cache/

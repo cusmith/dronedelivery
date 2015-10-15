@@ -1,0 +1,75 @@
+{% extends "app/app-base.html" %}
+
+{% block title %}create an account{% endblock %}
+{% block short_title %}register{% endblock %}
+
+{% block content %}
+	
+	<h1>create an account</h1>
+
+	<div>
+		<form method='post'>{% csrf_token %}
+		<table>
+		<tr><td>
+			<div class='registration-item-half'>
+				First Name
+				<input id='firstname-box' class='registration-input' type='text' name='firstname'>
+				<span class='registration-issues'></span>
+			</div>
+			<div class='registration-item-half'>
+				Last Name
+				<input id='lastname-box' class='registration-input' type='text' name='lastname'>
+				<span class='registration-issues'></span>
+			</div>
+		</td></tr>
+		<tr><td>
+			<div class='registration-item-half'>
+				Username
+				<input id='username-box' class='registration-input' type='text' name='username'>
+			</div>
+			<div class='registration-item-half'>
+				<div class='registration-item-desc'>
+					username: availible
+				</div>
+			</div>
+		</td></tr>
+		<tr><td>
+			<div class='registration-item-half'>
+				Password
+				<input id='password-box' class='registration-input' type='password' name='password'>
+			</div>
+			<div class='registration-item-half'>
+				<div class='registration-item-desc'>
+					password strength: strong
+				</div>
+			</div>
+		</td></tr>
+		<tr><td>
+			<div class='registration-item-half'>
+				Credit Card Number
+				<input id='ccn-box' class='registration-input' type='text' name='ccn'>
+			</div>
+			<div class='registration-item-half'>
+				Expiry Date
+				<input id='ccn-exp-box' class='registration-input' type='month' placeholder='mm/yyyy' name='ccn-exp'>
+			</div>
+		</td></tr>
+		<tr><td>
+			<div class='registration-item'>
+				Address Line 1
+				<input id='address1-box' class='registration-input' type='text' name='address1'>
+			</div>
+		</td></tr>
+		<tr><td>
+			<div class='registration-item'>
+				Address Line 2
+				<input id='address2-box' class='registration-input' type='text' name='address2'>
+			</div>
+		</td></tr>
+		</table>
+		<input id='submit-button' class='input-box' type="submit" name='submit' value='submit'>
+		</form>
+	</div>
+
+
+{% endblock %}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
+	<title>{% block title %}{% endblock %} | drone delivery service</title>
+	<link rel="stylesheet" type="text/css" href="app.css"></link>
+	<link href='https://fonts.googleapis.com/css?family=Raleway:500,400,100' rel='stylesheet' type='text/css'>
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript">
+	var long_width = 0;
+	var long_title  = "drone delivery service ";
+	var short_title = "dds ";
+
+	var title_collapse_lengths = [0,0,0];
+
+	var resizeHandler = function() {
+		if ($("#session-status-box").outerWidth() + long_width > $("#title-bar-content").width() - 10) {
+			$(".title-collapse").each(function (i,e) {
+				//$(e).width(0);
+				$(e).css("max-width",0);
+			});
+		} else {
+			$(".title-collapse").each(function (i,e) {
+				//$(e).width(title_collapse_lengths[i]);
+				$(e).css("max-width",title_collapse_lengths[i]);
+			});
+		}
+	};
+	$(document).ready(function() {
+		$(".title-collapse").each(function (i,e) {
+			title_collapse_lengths[i] = $(e).outerWidth();
+		});
+		long_width = $("#title").outerWidth();
+		resizeHandler();
+		$(window).resize(resizeHandler);
+	});
+
+	</script>
+</head>
+<body>
+	<div id='title-bar'>
+		<div id='title-bar-content'>
+			<div id='title'>
+				<span class='h1' id='title-bar-title'>
+					<div class='title-no-collapse'>d</div>
+					<div class='title-collapse'>rone&nbsp</div>
+					<div class='title-no-collapse'>d</div>
+					<div class='title-collapse'>elivery&nbsp</div>
+					<div class='title-no-collapse'>s</div>
+					<div class='title-collapse'>ervice</div>
+					&nbsp
+				</span>
+				<span class='h2'>| {% block short_title %}{% endblock %}</span>
+			</div>
+			<div id='session-status-box'>
+				{% if logged_in %}
+
+				{% else %}
+					<a href='login'>Log in.</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div id='main'>
+		<div id='content-container'>
+			<div id='content'>
+				<div id='content-inner'>
+					{% block content %}{% endblock %}
+				</div>
+			</div>
+		</div>
+		<div id='center-column'>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,245 @@
+///////////////////////////////////////////////////////////////////////////////
+//// General Site Rules ///////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+$primary-font:			'Raleway', sans-serif
+$primary-font-size:		75%
+$primary-font-weight:	400
+
+$link-font-weight:		500
+
+$background-color:		#f8f8f8
+$title-bar-color:		#f0f0f0
+$content-area-color:	#ffffff
+
+$dark-text-color:		#202020
+$medium-text-color:		#505050
+$light-text-color:		#b0b0b0
+
+$hover-transition-time:	0.3s
+
+=centered-box($width)
+	max-width: $width
+	margin-left: auto
+	margin-right: auto
+
+*
+	font-family: $primary-font
+	color: $dark-text-color
+
+.h1
+	font-size: 2em
+	font-weight: lighter
+	color: $medium-text-color
+
+h1 
+	@extend .h1
+	margin: 0.2em
+
+.h2
+	font-size: 2em
+	font-weight: lighter
+	color: $light-text-color
+
+h2 
+	@extend .h2
+	margin: 0.2em
+
+strong
+	color: inherit
+
+a:link, a:visited
+	font-weight: $link-font-weight
+
+\:root
+	font-size: $primary-font-size
+	font-weight: $primary-font-weight
+
+.rounded-box
+	margin: 3px
+	padding: 3px
+	border: 1px solid $light-text-color
+	border-radius: 3px
+	background-color: $content-area-color
+
+.input-box 
+	@extend .rounded-box
+
+.input-box:focus 
+	box-shadow: 0px 0px 2px $light-text-color
+
+///////////////////////////////////////////////////////////////////////////////
+//// App Base Rules ///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+$title-bar-height:		3rem
+$content-max-width:		66rem
+$content-inner-width:	42rem
+$content-padding:		1em
+
+body
+	margin: 0px
+	background-color: $background-color
+	background-image: url("/static/app/bg.png")
+	background-position: center top
+
+#title-bar
+	position: fixed
+	z-index: 3
+	width: 100%
+	top: 0px
+	height: $title-bar-height
+	background-color: $title-bar-color
+	border-bottom: 1px solid $light-text-color
+
+
+#title-bar-content 
+	+centered-box($content-max-width)
+	position: relative
+	padding-left: 1em
+	padding-right: 1em
+	max-height: $title-bar-height
+	overflow-y: hidden
+
+#title 
+	float: left
+
+.title-segment
+	float: left
+	overflow: hidden
+	transition: max-width 1s
+
+.title-collapse
+	@extend .title-segment
+	max-width: 20rem
+
+.title-no-collapse
+	@extend .title-segment
+
+#session-status-box 
+	position: absolute
+	top: ($title-bar-height - 1rem) / 2
+	right: 2rem
+
+#main
+	margin-top: $title-bar-height
+
+#center-column
+	position: fixed
+	z-index: -1
+	width: $content-max-width
+	top: 0px
+	left: unquote("calc((100% - ")$content-max-width unquote(") / 2)")
+	height: 100vh
+	background-color: $content-area-color
+	opacity: 0.8
+	border-left: 1px solid $light-text-color
+	border-right: 1px solid $light-text-color
+
+#content-container
+	+centered-box($content-max-width)
+
+#content
+	position: relative
+	padding: $content-padding
+
+#content-inner
+	+centered-box($content-inner-width)
+
+///////////////////////////////////////////////////////////////////////////////
+//// Login Page Rules /////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+#login-container
+	position: fixed
+	top: unquote("calc(50% +")$title-bar-height unquote(")")
+	left: 50%
+	margin-right: -50%
+	transform: unquote("translate(-50%, calc(-1 * (")$title-bar-height unquote(" / 2) - 50%))")
+	width: 200px
+	text-align: center
+
+///////////////////////////////////////////////////////////////////////////////
+//// Registration Page Rules //////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+$register-item-margin:	0.5rem
+$register-item-width:	$content-inner-width - ($register-item-margin * 8)
+
+.registration-item
+	float: left
+	min-height: 3rem
+	width: 100%
+	max-width: $register-item-width
+	min-width: $register-item-width / 2
+
+.registration-item-half
+	@extend .registration-item
+	max-width: $register-item-width / 2
+
+.registration-input
+	@extend .input-box
+	width: unquote("calc(100% - ")$register-item-margin*4 unquote(")")
+
+.registration-item-desc
+	padding-top: 1.5rem
+
+///////////////////////////////////////////////////////////////////////////////
+//// Inventory Page Rules /////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+$inventory-item-height:	10rem
+
+#inventory-list
+	padding: 0px
+	list-style-type: none
+	position: relative
+
+.inventory-item-expand
+	position: absolute
+	width: unquote("calc(100% - ")3rem unquote(")")
+	height: 3rem
+	z-index: 1
+
+.inventory-item-min
+	float: right
+	text-decoration: none
+	font-size: 1.5em
+	font-weight: lighter !important
+	color: $light-text-color
+	transition: opacity $hover-transition-time
+	opacity: 0
+
+.inventory-item:target .inventory-item-min
+	opacity: 1
+
+.inventory-item
+	@extend .rounded-box
+	transition: color $hover-transition-time
+	color: $medium-text-color
+	transition: background-color $hover-transition-time
+	background-color: transparent
+	padding: 0.5em
+	display: block
+	z-index: 2
+
+.inventory-item:hover, .inventory-item-expand:hover + .inventory-item, .inventory-item:target
+	color: $dark-text-color
+	background-color: $content-area-color
+
+.item-description
+	transition: height 0s $hover-transition-time
+	height: 100rem
+	overflow-y: auto
+	padding: 0.5em
+
+.item-description-container
+	transition: max-height $hover-transition-time 0s
+	overflow: hidden
+	max-height: 0rem
+
+.inventory-item:target .item-description
+	height: $inventory-item-height
+
+.inventory-item:target .item-description-container
+	max-height: $inventory-item-height
