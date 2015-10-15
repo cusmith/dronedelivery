@@ -74,18 +74,31 @@ WSGI_APPLICATION = 'dronedelivery.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
+'''
+# Uncomment this section to use postgres
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dronedelivery',
-        'USER': 'admin',
-        'PASSWORD': '',
+        'USER': 'admin', #postgres username
+        'PASSWORD': '', #postgres password
         'HOST': 'localhost',
         'PORT': '',
     }
 }
+'''
+'''
+# Uncomment this section to use sqlite3 (works without setup - can use for local testing)
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
+'''
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
