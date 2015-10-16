@@ -189,6 +189,7 @@ $register-item-width:	$content-inner-width - ($register-item-margin * 8)
 ///////////////////////////////////////////////////////////////////////////////
 
 $inventory-item-height:	10rem
+$inventory-item-pad:	0.5rem
 
 #inventory-list
 	padding: 0px
@@ -197,16 +198,19 @@ $inventory-item-height:	10rem
 
 .inventory-item-expand
 	position: absolute
-	width: unquote("calc(100% - ")3rem unquote(")")
-	height: 3rem
+	width: unquote("calc(100% - ")2 * $inventory-item-pad unquote(")")
+	height: 2rem
 	z-index: 1
+
+.inventory-item:target .inventory-item-expand
+	visibility: hidden
 
 .inventory-item-min
 	float: right
 	text-decoration: none
-	font-size: 1.5em
+	font-size: 1.75em
 	font-weight: lighter !important
-	color: $light-text-color
+	color: $medium-text-color
 	transition: opacity $hover-transition-time
 	opacity: 0
 
@@ -215,11 +219,12 @@ $inventory-item-height:	10rem
 
 .inventory-item
 	@extend .rounded-box
+	position: relative
 	transition: color $hover-transition-time
 	color: $medium-text-color
 	transition: background-color $hover-transition-time
 	background-color: transparent
-	padding: 0.5em
+	padding: $inventory-item-pad
 	display: block
 	z-index: 2
 
@@ -231,7 +236,7 @@ $inventory-item-height:	10rem
 	transition: height 0s $hover-transition-time
 	height: 100rem
 	overflow-y: auto
-	padding: 0.5em
+	padding: $inventory-item-pad
 
 .item-description-container
 	transition: max-height $hover-transition-time 0s
@@ -243,3 +248,15 @@ $inventory-item-height:	10rem
 
 .inventory-item:target .item-description-container
 	max-height: $inventory-item-height
+
+.order-button
+	@extend .rounded-box
+	text-decoration: none
+	background-color: transparent
+	float: right
+	font-weight: lighter !important
+	transition: opacity $hover-transition-time
+	opacity: 0
+
+.inventory-item:target .order-button
+	opacity: 1

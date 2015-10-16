@@ -10,10 +10,15 @@
 		<ul id='inventory-list'>
 		{% for item in inventory_items %}
 
-			<a href='#item-{{ item.product_name|slugify }}' class='inventory-item-expand'></a>
+			
 			<div class='inventory-item' id='item-{{ item.product_name|slugify }}'>
+				<a href='#item-{{ item.product_name|slugify }}' class='inventory-item-expand'></a>
 				<strong>{{ item.product_name }}</strong>
-				<a href="#" class='inventory-item-min'>[-]</a><br>
+				<a href='#' class='inventory-item-min'>[-]</a>
+				{% if item.stock_count > 0 %}
+					<a class='order-button' href='account' >add to cart</a>
+				{% endif %}
+				<br>
 				{% if item.stock_count > 0 %}
 					{{ item.stock_count }} in stock
 				{% else %}
@@ -21,7 +26,9 @@
 				{% endif %}
 				<div class='item-description-container'>
 					<div class='item-description'>
-						Description:<br><br>
+						Description:
+						
+						<br><br>
 						{{ item.description }}
 					</div>
 				</div>
@@ -31,47 +38,6 @@
 	{% else %}
 		<p>No items availible.</p>
 	{% endif %}
-
-<!--
-<ul id='inventory-list'>
-	<a href='#item-pool-table' class='inventory-item-expand'></a>
-	<div class='inventory-item' id='item-pool-table'>
-		<strong>Pool Table</strong>
-		<a href="#" class='inventory-item-min'>[-]</a><br>
-		4 in stock
-		<div class='item-description-container'>
-			<div class='item-description'>
-				Description:<br><br>
-				{% lorem %}
-			</div>
-		</div>
-	</div>
-	<a href='#item-ping-pong-ball' class='inventory-item-expand'></a>
-	<div class='inventory-item' id='item-ping-pong-ball'>
-		<strong>Ping Pong Ball</strong>
-		<a href="#" class='inventory-item-min'>[-]</a><br>
-		9452 in stock
-		<div class='item-description-container'>
-			<div class='item-description'>
-				Description:<br><br>
-				{% lorem %}
-			</div>
-		</div>
-	</div>
-	<a href='#item-drone' class='inventory-item-expand'></a>
-	<div class='inventory-item' id='item-drone'>
-		<strong>Drone</strong>
-		<a href="#" class='inventory-item-min'>[-]</a><br>
-		out of stock
-		<div class='item-description-container'>
-			<div class='item-description'>
-				Description:<br><br>
-				{% lorem %}
-			</div>
-		</div>
-	</div>
-</ul>
--->
 
 
 {% endblock %}
