@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset='utf-8'>
-	<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0;"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"></meta>
 	<title>{% block title %}{% endblock %} | drone delivery service</title>
 	<link rel="stylesheet" type="text/css" href="app.css"></link>
 	<link href='https://fonts.googleapis.com/css?family=Raleway:500,400,100' rel='stylesheet' type='text/css'>
@@ -17,12 +17,10 @@
 	var resizeHandler = function() {
 		if ($("#session-status-box").outerWidth() + long_width > $("#title-bar-content").width() - 10) {
 			$(".title-collapse").each(function (i,e) {
-				//$(e).width(0);
 				$(e).css("max-width",0);
 			});
 		} else {
 			$(".title-collapse").each(function (i,e) {
-				//$(e).width(title_collapse_lengths[i]);
 				$(e).css("max-width",title_collapse_lengths[i]);
 			});
 		}

@@ -5,17 +5,34 @@
 
 {% block content %}
 	
-<!--
+
 	{% if inventory_items %}
-		<ul>
+		<ul id='inventory-list'>
 		{% for item in inventory_items %}
-			{{ item.product_name }} ({{ item.stock_count }})
+
+			<a href='#item-{{ item.product_name|slugify }}' class='inventory-item-expand'></a>
+			<div class='inventory-item' id='item-{{ item.product_name|slugify }}'>
+				<strong>{{ item.product_name }}</strong>
+				<a href="#" class='inventory-item-min'>[-]</a><br>
+				{% if item.stock_count > 0 %}
+					{{ item.stock_count }} in stock
+				{% else %}
+					out of stock
+				{% endif %}
+				<div class='item-description-container'>
+					<div class='item-description'>
+						Description:<br><br>
+						{{ item.description }}
+					</div>
+				</div>
+			</div>
 		{% endfor %}
 		</ul>
 	{% else %}
 		<p>No items availible.</p>
 	{% endif %}
--->
+
+<!--
 <ul id='inventory-list'>
 	<a href='#item-pool-table' class='inventory-item-expand'></a>
 	<div class='inventory-item' id='item-pool-table'>
@@ -54,6 +71,7 @@
 		</div>
 	</div>
 </ul>
+-->
 
 
 {% endblock %}
