@@ -16,7 +16,7 @@
 				<strong>{{ item.product_name }}</strong>
 				<a href='#' class='inventory-item-min'>[-]</a>
 				{% if item.stock_count > 0 %}
-					<a class='order-button' href='account' >add to cart</a>
+					<a class='order-button' href='#add-{{ item.product_name|slugify }}' >add to cart</a>
 				{% endif %}
 				<br>
 				{% if item.stock_count > 0 %}
@@ -26,15 +26,32 @@
 				{% endif %}
 				<div class='item-description-container'>
 					<div class='item-description'>
-						Description:
-						
-						<br><br>
+						<p style='float:right;'>price: ${{ item.price }}</p>
+						<p>Description:</p>
 						{{ item.description }}
 					</div>
 				</div>
 			</div>
 		{% endfor %}
 		</ul>
+		{% for item in inventory_items %}
+			<div class='add-item-dialog-container' id='add-{{ item.product_name|slugify }}'>
+				<div class='screen-shade'></div>
+				<div class='add-item-dialog'>
+					<div class='add-item-dialog-content'>
+						<a class='add-item-dialog-min' href='#item-{{ item.product_name|slugify }}'>X</a>
+						<h3>add to cart</h3>
+						<p>price: ${{ item.price }}</p>
+						<form class='add-item-form' method='post'>{% csrf_token %}
+							Quantity
+							<input class='input-box' type='number' value='1' min='0' max='{{ item.stock_count }}'><br>
+							<input class='input-box' type="submit" name='submit' value='add and keep shopping'>
+							<input class='input-box' type="submit" name='submit' value='add and go to checkout'>
+						</form>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
 	{% else %}
 		<p>No items availible.</p>
 	{% endif %}

@@ -45,6 +45,15 @@ h2
 	@extend .h2
 	margin: 0.2em
 
+.h3
+	font-size: 1.75em
+	font-weight: lighter
+	color: $medium-text-color
+
+h3
+	@extend .h3
+	margin: 0.2em
+
 strong
 	color: inherit
 
@@ -85,7 +94,7 @@ body
 
 #title-bar
 	position: fixed
-	z-index: 3
+	z-index: 4
 	width: 100%
 	top: 0px
 	height: $title-bar-height
@@ -199,7 +208,7 @@ $inventory-item-pad:	0.5rem
 .inventory-item-expand
 	position: absolute
 	width: unquote("calc(100% - ")2 * $inventory-item-pad unquote(")")
-	height: 2rem
+	height: 2.5rem
 	z-index: 1
 
 .inventory-item:target .inventory-item-expand
@@ -226,7 +235,6 @@ $inventory-item-pad:	0.5rem
 	background-color: transparent
 	padding: $inventory-item-pad
 	display: block
-	z-index: 2
 
 .inventory-item:hover, .inventory-item-expand:hover + .inventory-item, .inventory-item:target
 	color: $dark-text-color
@@ -260,3 +268,63 @@ $inventory-item-pad:	0.5rem
 
 .inventory-item:target .order-button
 	opacity: 1
+
+.add-item-dialog-container
+	position: fixed
+	z-index: -1
+	top: 0px
+	left: 0px
+	width: 100%
+	height: 100%
+	transition: visibility $hover-transition-time, z-index $hover-transition-time
+	visibility: hidden
+	overflow: hidden
+
+.add-item-dialog-container:target
+	visibility: visible
+	z-index: 3
+
+.screen-shade
+	position: absolute
+	z-index: 3
+	width: 100%
+	height: 100%
+	background-color: #000000
+	transition: visibility $hover-transition-time, opacity $hover-transition-time
+	visibility: hidden
+	opacity: 0
+
+.add-item-dialog-container:target .screen-shade
+	visibility: visible
+	opacity: 0.8
+
+.add-item-dialog
+	+centered-box($content-inner-width)
+	position: relative
+	z-index: 4
+	top: unquote("calc(25% +")$title-bar-height unquote(")")
+	transform: unquote("translate(0%, calc(-1 * (")$title-bar-height unquote(" / 2) - 25%))")
+	padding: $title-bar-height
+	transition: visibility $hover-transition-time, opacity $hover-transition-time
+	visibility: hidden
+	opacity: 0
+
+.add-item-dialog-container:target .add-item-dialog
+	visibility: visible
+	opacity: 1
+
+.add-item-dialog-content
+	@extend .rounded-box
+	+centered-box(30rem)
+	width: 100%
+
+.add-item-dialog-min
+	float: right
+	text-decoration: none
+	margin: 0.2em
+	font-size: 1.75em
+	font-weight: lighter !important
+	color: $medium-text-color
+
+.add-item-form
+	text-align: center

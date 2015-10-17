@@ -18,6 +18,14 @@ h1 {
 h2 {
   margin: 0.2em; }
 
+.h3, h3 {
+  font-size: 1.75em;
+  font-weight: lighter;
+  color: #505050; }
+
+h3 {
+  margin: 0.2em; }
+
 strong {
   color: inherit; }
 
@@ -28,7 +36,7 @@ a:link, a:visited {
   font-size: 75%;
   font-weight: 400; }
 
-.rounded-box, .input-box, .registration-input, .inventory-item, .order-button {
+.rounded-box, .input-box, .registration-input, .inventory-item, .order-button, .add-item-dialog-content {
   margin: 3px;
   padding: 3px;
   border: 1px solid #b0b0b0;
@@ -46,7 +54,7 @@ body {
 
 #title-bar {
   position: fixed;
-  z-index: 3;
+  z-index: 4;
   width: 100%;
   top: 0px;
   height: 3rem;
@@ -141,7 +149,7 @@ body {
 .inventory-item-expand {
   position: absolute;
   width: calc(100% -  1rem );
-  height: 2rem;
+  height: 2.5rem;
   z-index: 1; }
 
 .inventory-item:target .inventory-item-expand {
@@ -166,8 +174,7 @@ body {
   transition: background-color 0.3s;
   background-color: transparent;
   padding: 0.5rem;
-  display: block;
-  z-index: 2; }
+  display: block; }
 
 .inventory-item:hover, .inventory-item-expand:hover + .inventory-item, .inventory-item:target {
   color: #202020;
@@ -200,5 +207,68 @@ body {
 
 .inventory-item:target .order-button {
   opacity: 1; }
+
+.add-item-dialog-container {
+  position: fixed;
+  z-index: -1;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  transition: visibility 0.3s, z-index 0.3s;
+  visibility: hidden;
+  overflow: hidden; }
+
+.add-item-dialog-container:target {
+  visibility: visible;
+  z-index: 3; }
+
+.screen-shade {
+  position: absolute;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  background-color: #000000;
+  transition: visibility 0.3s, opacity 0.3s;
+  visibility: hidden;
+  opacity: 0; }
+
+.add-item-dialog-container:target .screen-shade {
+  visibility: visible;
+  opacity: 0.8; }
+
+.add-item-dialog {
+  max-width: 42rem;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+  z-index: 4;
+  top: calc(25% + 3rem );
+  transform: translate(0%, calc(-1 * ( 3rem  / 2) - 25%));
+  padding: 3rem;
+  transition: visibility 0.3s, opacity 0.3s;
+  visibility: hidden;
+  opacity: 0; }
+
+.add-item-dialog-container:target .add-item-dialog {
+  visibility: visible;
+  opacity: 1; }
+
+.add-item-dialog-content {
+  max-width: 30rem;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%; }
+
+.add-item-dialog-min {
+  float: right;
+  text-decoration: none;
+  margin: 0.2em;
+  font-size: 1.75em;
+  font-weight: lighter !important;
+  color: #505050; }
+
+.add-item-form {
+  text-align: center; }
 
 /*# sourceMappingURL=app.css.map */
