@@ -2,6 +2,21 @@
 //// General Site Rules ///////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////
 
+@font-face
+	font-family: 'Raleway'
+	src: url("/static/app/raleway-light.woff2")
+	font-weight: 100
+
+@font-face
+	font-family: 'Raleway'
+	src: url("/static/app/raleway-normal.woff2")
+	font-weight: 400
+
+@font-face
+	font-family: 'Raleway'
+	src: url("/static/app/raleway-bold.woff2")
+	font-weight: 700
+
 $primary-font:			'Raleway', sans-serif
 $primary-font-size:		75%
 $primary-font-weight:	400
@@ -89,6 +104,7 @@ $content-padding:		1em
 body
 	margin: 0px
 	background-color: $background-color
+	background-image: url("/static/app/bg-compressed.jpg")
 	background-image: url("/static/app/bg.png")
 	background-position: center top
 
@@ -108,6 +124,7 @@ body
 	padding-left: 1em
 	padding-right: 1em
 	max-height: $title-bar-height
+	margin-top: 0.2rem
 	overflow-y: hidden
 
 #title 

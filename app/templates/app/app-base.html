@@ -5,7 +5,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"></meta>
 	<title>{% block title %}{% endblock %} | drone delivery service</title>
 	<link rel="stylesheet" type="text/css" href="app.css"></link>
-	<link href='https://fonts.googleapis.com/css?family=Raleway:500,400,100' rel='stylesheet' type='text/css'>
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
 	var long_width = 0;
@@ -49,7 +48,7 @@
 					<div class='title-collapse'>ervice</div>
 					&nbsp
 				</span>
-				<span class='h2'>| {% block short_title %}{% endblock %}</span>
+				<span id='page-title' class='h2'>| {% block short_title %}{% endblock %}</span>
 			</div>
 			<div id='session-status-box'>
 				{% if logged_in %}

@@ -1,3 +1,15 @@
+@font-face {
+  font-family: "Raleway";
+  src: url("/static/app/raleway-light.woff2");
+  font-weight: 100; }
+@font-face {
+  font-family: "Raleway";
+  src: url("/static/app/raleway-normal.woff2");
+  font-weight: 400; }
+@font-face {
+  font-family: "Raleway";
+  src: url("/static/app/raleway-bold.woff2");
+  font-weight: 700; }
 * {
   font-family: "Raleway", sans-serif;
   color: #202020; }
@@ -49,6 +61,7 @@ a:link, a:visited {
 body {
   margin: 0px;
   background-color: #f8f8f8;
+  background-image: url("/static/app/bg-compressed.jpg");
   background-image: url("/static/app/bg.png");
   background-position: center top; }
 
@@ -69,6 +82,7 @@ body {
   padding-left: 1em;
   padding-right: 1em;
   max-height: 3rem;
+  margin-top: 0.2rem;
   overflow-y: hidden; }
 
 #title {
