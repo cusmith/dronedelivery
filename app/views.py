@@ -35,6 +35,18 @@ def account(request):
 	return render(request, 'app/account.html', {})
 
 def inventory(request):
+	if request.method == 'POST':
+		
+		#update the inventory count
+		inventoryItem = InventoryType.objects.get(product_name=request.POST['item'])
+		inventoryItem.stock_count = inventoryItem.stock_count - int(request.POST['quantity'])
+		inventoryItem.save()
+		
+		response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'inventory'
+		return response
+	
 	inventory_items = InventoryType.objects.all()
 	context = {'inventory_items': inventory_items}
 	return render(request, 'app/inventory.html', context)

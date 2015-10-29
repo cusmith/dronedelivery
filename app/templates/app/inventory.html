@@ -43,8 +43,9 @@
 						<h3>add to cart</h3>
 						<p>price: ${{ item.price }}</p>
 						<form class='add-item-form' method='post'>{% csrf_token %}
+							<input type="item" name='item' readonly='readonly' value='{{item.product_name}}'><br>
 							Quantity
-							<input class='input-box' type='number' value='1' min='0' max='{{ item.stock_count }}'><br>
+							<input class='input-box' type='number' name='quantity' value='1' min='0' max='{{ item.stock_count }}'><br>
 							<input class='input-box' type="submit" name='submit' value='add and keep shopping'>
 							<input class='input-box' type="submit" name='submit' value='add and go to checkout'>
 						</form>
