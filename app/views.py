@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from app.models import InvoiceItem, Invoice, InventoryType
+from app.models import User, InvoiceItem, Invoice, Drone, InventoryType
 
 
 def index(request):
@@ -36,10 +36,31 @@ def account(request):
 
 def inventory(request):
 	if request.method == 'POST':
+		#todo get the user info
+		username = 'uname'
+		
+		#get the invoice
+		try:
+			user_invoice = Invoice.objects.filter(status='pending').get(user__username=username)
+		except Invoice.DoesNotExist:
+			user_invoice = Invoice(status='pending', user=User.objects.get(username=username))
+			user_invoice.save()
+
+		inventoryItem = InventoryType.objects.get(product_name=request.POST['item'])
+		
+		#todo get appropriate drone
+		newDrone = Drone(status='Idle', location='home')
+		newDrone.save()
+		
+		itemCount = int(request.POST['quantity'])
+		#add invoice items to the invoice with the drone
+		for x in range(itemCount):
+			print x
+			inv_item = InvoiceItem(invoice=user_invoice, drone=newDrone, inventory_type=inventoryItem)
+			inv_item.save()
 		
 		#update the inventory count
-		inventoryItem = InventoryType.objects.get(product_name=request.POST['item'])
-		inventoryItem.stock_count = inventoryItem.stock_count - int(request.POST['quantity'])
+		inventoryItem.stock_count = inventoryItem.stock_count - itemCount
 		inventoryItem.save()
 		
 		response = HttpResponse()
