@@ -8,6 +8,7 @@ urlpatterns = [
     url(r'^register$', views.register, name='register'),
     url(r'^account$', views.account, name='account'),
     url(r'^inventory$', views.inventory, name='inventory'),
+    url(r'^history$', views.history, name='history'),
     url(r'^app\.css$', views.css, name='css'),
     url(r'.*', views.error404, name='error404'),
 ]
