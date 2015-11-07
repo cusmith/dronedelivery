@@ -34,6 +34,9 @@ def register(request):
 def account(request):
 	return render(request, 'app/account.html', {})
 
+def checkout(request):
+	return render(request, 'app/checkout.html', {})
+
 def inventory(request):
 	if request.method == 'POST':
 		#todo get the user info
