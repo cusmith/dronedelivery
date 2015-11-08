@@ -1,0 +1,32 @@
+{% extends "app/app-base.html" %}
+
+{% block title %}Purchase History{% endblock %}
+{% block short_title %}History{% endblock %}
+
+{% block content %}
+	
+
+	Purchase History
+
+	{% if invoices %}
+		<ul id="invoice-list">
+		{% for invoice in invoices %}
+			<div class='inventory-item' id='invoice-{{ invoice.id|slugify }}'>
+				{{ invoice.status }}
+				<ul id="invoice-item-list">
+					{% for invoice_item in invoice.invoiceitem_set.all %}
+						Product: {{ invoice_item.inventory_type.product_name }}
+						Delivered by drone [{{ invoice_item.drone.id }}]
+						<br>
+					{% endfor %}
+				</ul>
+			</div>
+		{% endfor %}
+		</ul>
+	{% endif %}
+
+
+
+
+{% endblock %}
+

@@ -85,6 +85,14 @@ def inventory(request):
 	context = {'inventory_items': inventory_items}
 	return render(request, 'app/inventory.html', context)
 
+def history(request):
+	# Use this line once users get implemented
+	# invoices = Invoice.objects.filter(status='complete', user=request.user)
+	invoices = Invoice.objects.all()
+	context = {'invoices': invoices}
+	print context
+	return render(request, 'app/history.html', context)
+
 def css(request):
 	return render(request, request.path[1:], {},content_type='text/css')
 
