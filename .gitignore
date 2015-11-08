@@ -5,3 +5,4 @@
 *.css.map
 .sass-cache/
 settings.py
+googleapikey.js
