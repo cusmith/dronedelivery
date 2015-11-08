@@ -35,7 +35,11 @@ def account(request):
 	return render(request, 'app/account.html', {})
 
 def checkout(request):
-	return render(request, 'app/checkout.html', {})
+	fake_cart = []
+	for itype in InventoryType.objects.all():
+		fake_cart.append(type('',(object,),{"type": itype,"count": 3})())
+	context = {"cart_items": fake_cart}
+	return render(request, 'app/checkout.html', context)
 
 def inventory(request):
 	if request.method == 'POST':

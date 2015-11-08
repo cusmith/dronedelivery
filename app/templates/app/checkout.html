@@ -6,7 +6,13 @@
 {% block content %}
 	
 
-	checkout page goes here
+	{% if cart_items %}
+		{% for item in cart_items %}
+			<strong>{{ item.type.product_name }}</strong><br>
+		{% endfor %}
+	{% else %}
+		<p>Your cart is empty. <a href='inventory'>See inventory.</a></p>
+	{% endif %}
 
 
 {% endblock %}
