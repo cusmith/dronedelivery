@@ -79,12 +79,15 @@ a:link, a:visited
 	font-size: $primary-font-size
 	font-weight: $primary-font-weight
 
-.rounded-box
+.box
 	margin: 3px
 	padding: 3px
+	background-color: $content-area-color
+
+.rounded-box
+	@extend .box
 	border: 1px solid $light-text-color
 	border-radius: 3px
-	background-color: $content-area-color
 
 .input-box 
 	@extend .rounded-box
@@ -345,3 +348,42 @@ $inventory-item-pad:	0.5rem
 
 .add-item-form
 	text-align: center
+
+///////////////////////////////////////////////////////////////////////////////
+//// Checkout Page Rules //////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////
+
+.cart-items
+	width: 100%
+
+.cart-item-field
+	width: 30%
+	max-height: 2rem
+
+.cart-item-narrow
+	@extend .cart-item-field
+	width: 10%
+
+.field-left
+	text-align: left
+
+.field-right
+	text-align: right
+
+.cart-quantity
+	width: 8rem
+
+.mark-checkbox
+	position: fixed
+	opacity: 0
+	//visibility: hidden
+
+.mark-label
+	@extend .rounded-box
+	color: $content-area-color
+
+.mark-checkbox:checked + .mark-label
+	color: $light-text-color
+
+.mark-checkbox:focus + .mark-label
+	box-shadow: 0px 0px 2px $light-text-color

@@ -34,6 +34,19 @@ def register(request):
 def account(request):
 	return render(request, 'app/account.html', {})
 
+def checkout(request):
+	# TODO: integrate with database
+	#
+	#	- Identify the pending invoice belonging to the current user
+	#	- Collect list of InvoiceItems associated with that invoice
+	#
+
+	fake_cart = []
+	for itype in InventoryType.objects.all():
+		fake_cart.append(type('',(object,),{"type": itype,"count": 3})())
+	context = {"cart_items": fake_cart}
+	return render(request, 'app/checkout.html', context)
+
 def inventory(request):
 	if request.method == 'POST':
 		#todo get the user info
@@ -73,6 +86,7 @@ def inventory(request):
 	return render(request, 'app/inventory.html', context)
 
 def history(request):
+	# invoices = Invoice.objects.filter(status='complete', user=request.user) #this lin
 	invoices = Invoice.objects.all()
 	context = {'invoices': invoices}
 	print context

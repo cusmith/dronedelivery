@@ -48,12 +48,14 @@ a:link, a:visited {
   font-size: 75%;
   font-weight: 400; }
 
-.rounded-box, .input-box, .registration-input, .inventory-item, .order-button, .add-item-dialog-content {
+.box, .rounded-box, .input-box, .registration-input, .inventory-item, .order-button, .add-item-dialog-content, .mark-label {
   margin: 3px;
   padding: 3px;
-  border: 1px solid #b0b0b0;
-  border-radius: 3px;
   background-color: #ffffff; }
+
+.rounded-box, .input-box, .registration-input, .inventory-item, .order-button, .add-item-dialog-content, .mark-label {
+  border: 1px solid #b0b0b0;
+  border-radius: 3px; }
 
 .input-box:focus, .registration-input:focus {
   box-shadow: 0px 0px 2px #b0b0b0; }
@@ -284,5 +286,37 @@ body {
 
 .add-item-form {
   text-align: center; }
+
+.cart-items {
+  width: 100%; }
+
+.cart-item-field, .cart-item-narrow {
+  width: 30%;
+  max-height: 2rem; }
+
+.cart-item-narrow {
+  width: 10%; }
+
+.field-left {
+  text-align: left; }
+
+.field-right {
+  text-align: right; }
+
+.cart-quantity {
+  width: 8rem; }
+
+.mark-checkbox {
+  position: fixed;
+  opacity: 0; }
+
+.mark-label {
+  color: #ffffff; }
+
+.mark-checkbox:checked + .mark-label {
+  color: #b0b0b0; }
+
+.mark-checkbox:focus + .mark-label {
+  box-shadow: 0px 0px 2px #b0b0b0; }
 
 /*# sourceMappingURL=app.css.map */
