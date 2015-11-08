@@ -47,6 +47,16 @@ def checkout(request):
 	context = {"cart_items": fake_cart}
 	return render(request, 'app/checkout.html', context)
 
+def status(request):
+	# TODO: integrate with database
+	#
+	#	- Identify the drone carrying the correct order
+	#	- Get drone location as lat/long
+	#
+
+	context = {"drone_location": {"latitude": 48.461211,"longitude": -123.310581}}
+	return render(request, 'app/status.html', context)
+
 def inventory(request):
 	if request.method == 'POST':
 		#todo get the user info
