@@ -86,7 +86,8 @@ def inventory(request):
 	return render(request, 'app/inventory.html', context)
 
 def history(request):
-	# invoices = Invoice.objects.filter(status='complete', user=request.user) #this lin
+	# Use this line once users get implemented
+	# invoices = Invoice.objects.filter(status='complete', user=request.user)
 	invoices = Invoice.objects.all()
 	context = {'invoices': invoices}
 	print context
