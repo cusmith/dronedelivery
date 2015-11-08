@@ -7,9 +7,62 @@
 	
 
 	{% if cart_items %}
-		{% for item in cart_items %}
-			<strong>{{ item.type.product_name }}</strong><br>
-		{% endfor %}
+
+		<table class='cart-items'>
+			<tr>
+				<td class='cart-item-field field-left'>
+					<h3>Item</h3>
+				</td>
+				<td class='cart-item-field field-right'>
+					<h3>Quantity</h3>
+				</td>
+				<td class='cart-item-field field-right'>
+					<h3>Price</h3>
+				</td>
+			</tr>
+			{% for item in cart_items %}
+				<tr>
+					<td class='cart-item-field field-left'>
+						<strong>{{ item.type.product_name }}</strong>
+					</td>
+					<td class='cart-item-field field-right'>
+						<p>{{ item.count }}</p>
+					</td>
+					<td class='cart-item-field field-right'>
+						<p>${{ item.type.price }}</p>
+					</td>
+				</tr>
+			{% endfor %}
+			<tr>
+				<td></td>
+				<td class='cart-item-field field-right'>
+					<h3>Subtotal</h3>
+				</td>
+				<td class='cart-item-field field-right'>
+					<p>$345</p>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class='cart-item-field field-right'>
+					<h3>Tax</h3>
+				</td>
+				<td class='cart-item-field field-right'>
+					<p>$5</p>
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class='cart-item-field field-right'>
+					<h3>Total</h3>
+				</td>
+				<td class='cart-item-field field-right'>
+					<p>$350</p>
+				</td>
+			</tr>
+
+		</table>
+
 	{% else %}
 		<p>Your cart is empty. <a href='inventory'>See inventory.</a></p>
 	{% endif %}

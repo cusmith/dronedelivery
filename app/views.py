@@ -35,6 +35,12 @@ def account(request):
 	return render(request, 'app/account.html', {})
 
 def checkout(request):
+	# TODO: integrate with database
+	#
+	#	- Identify the pending invoice belonging to the current user
+	#	- Collect list of InvoiceItems associated with that invoice
+	#
+
 	fake_cart = []
 	for itype in InventoryType.objects.all():
 		fake_cart.append(type('',(object,),{"type": itype,"count": 3})())

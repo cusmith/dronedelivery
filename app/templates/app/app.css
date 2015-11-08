@@ -285,4 +285,17 @@ body {
 .add-item-form {
   text-align: center; }
 
+.cart-items {
+  width: 100%; }
+
+.cart-item-field {
+  width: 33%;
+  max-height: 2rem; }
+
+.field-left {
+  text-align: left; }
+
+.field-right {
+  text-align: right; }
+
 /*# sourceMappingURL=app.css.map */
