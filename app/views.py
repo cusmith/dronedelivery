@@ -71,7 +71,17 @@ def checkout(request):
 			pass
 		elif request.POST['submit'] == 'remove selected':
 			#for each item, if it is marked then remove from invoice
-			pass
+			if user_invoice is not None:
+				invoice_items = InvoiceItem.objects.filter(invoice=user_invoice)
+				invoice_types = invoice_items.distinct('inventory_type')
+				for intype in invoice_types:
+					#The POST has a field 'product-name-marked="on"' for each type to be removed
+					# construct the string to lookup and get it from the POST. If it is not present
+					# in the POST then assume this type is not to be removed
+					mark_str = (intype.inventory_type.product_name).lower().replace(' ','-') + "-marked"
+					removal = request.POST.get(mark_str, 'off')
+					if removal == 'on':
+						invoice_items.filter(inventory_type=intype.inventory_type).delete()
 		else:
 			#unknown post
 			print 'Unknown POST submit: ' + request.POST['submit']
@@ -138,7 +148,7 @@ def inventory(request):
 			user_invoice = Invoice.objects.filter(status='pending').get(user=userid)
 		except Invoice.DoesNotExist:
 			try:
-				user_invoice = Invoice(status='pending', user=userid)
+				user_invoice = Invoice(status='pending', user=User.objects.get(id=userid))
 				user_invoice.save()
 			except ValueError:
 				#user doesn't exist - shouldn't happen when user implemented
