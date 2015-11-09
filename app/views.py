@@ -2,6 +2,8 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 
+from decimal import *
+
 from app.models import User, InvoiceItem, Invoice, Drone, InventoryType
 
 from json import dumps
@@ -53,7 +55,8 @@ def checkout(request):
 		#there is no invoice for this user
 		user_invoice = None
 	
-	fake_cart = []
+	subtotal = Decimal(0.0)
+	real_cart = []
 	if user_invoice is not None:
 		invoice_items = InvoiceItem.objects.filter(invoice=user_invoice)
 		invoice_types = invoice_items.distinct('inventory_type')
@@ -63,9 +66,13 @@ def checkout(request):
 			#get the item description
 			inventory_obj = InventoryType.objects.get(id=intype.inventory_type.id)
 			#display in cart
-			fake_cart.append(type('',(object,),{'type': inventory_obj,'count': count})())
-
-	context = {'cart_items': fake_cart}
+			real_cart.append(type('',(object,),{'type': inventory_obj,'count': count})())
+			#add price to subtotal
+			subtotal += Decimal(count) * inventory_obj.price
+	
+	tax = (subtotal * Decimal(0.09)).quantize(Decimal('0.01'), rounding=ROUND_UP)
+	total = subtotal + tax
+	context = {'cart_items': real_cart, 'subtotal': subtotal, 'tax':tax, 'total':total}
 	return render(request, 'app/checkout.html', context)
 
 def status(request):
