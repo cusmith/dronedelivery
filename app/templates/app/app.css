@@ -48,12 +48,12 @@ a:link, a:visited {
   font-size: 75%;
   font-weight: 400; }
 
-.box, .rounded-box, .input-box, .registration-input, .inventory-item, .order-button, .add-item-dialog-content, .mark-label {
+.box, .rounded-box, .input-box, .registration-input, .inventory-item, .order-button, .add-item-dialog-content, .mark-label, #map {
   margin: 3px;
   padding: 3px;
   background-color: #ffffff; }
 
-.rounded-box, .input-box, .registration-input, .inventory-item, .order-button, .add-item-dialog-content, .mark-label {
+.rounded-box, .input-box, .registration-input, .inventory-item, .order-button, .add-item-dialog-content, .mark-label, #map {
   border: 1px solid #b0b0b0;
   border-radius: 3px; }
 
@@ -318,5 +318,9 @@ body {
 
 .mark-checkbox:focus + .mark-label {
   box-shadow: 0px 0px 2px #b0b0b0; }
+
+#map {
+  height: 100vh;
+  max-height: 42rem; }
 
 /*# sourceMappingURL=app.css.map */

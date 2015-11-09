@@ -10,6 +10,7 @@ urlpatterns = [
     url(r'^inventory$', views.inventory, name='inventory'),
     url(r'^history$', views.history, name='history'),
     url(r'^checkout$', views.checkout, name='checkout'),
+    url(r'^status$', views.status, name='status'),
     url(r'^app\.css$', views.css, name='css'),
     url(r'.*', views.error404, name='error404'),
 ]
