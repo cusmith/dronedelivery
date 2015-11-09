@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
 from app.models import User, InvoiceItem, Invoice, Drone, InventoryType
 
@@ -75,17 +76,28 @@ def status(request):
 	}
 	return render(request, 'app/status.html', context)
 
+@login_required
 def inventory(request):
 	if request.method == 'POST':
-		#todo get the user info
-		username = 'uname'
-		
-		#get the invoice
+		#todo request.user when the django user model is implemented
+		#userid = request.user
+		userid = 1
+
+		#get the pending invoice for this user.
+		# if one doesn't exist then create a new one
 		try:
-			user_invoice = Invoice.objects.filter(status='pending').get(user__username=username)
+			user_invoice = Invoice.objects.filter(status='pending').get(user=userid)
 		except Invoice.DoesNotExist:
-			user_invoice = Invoice(status='pending', user=User.objects.get(username=username))
-			user_invoice.save()
+			try:
+				user_invoice = Invoice(status='pending', user=userid)
+				user_invoice.save()
+			except ValueError:
+				#user doesn't exist - shouldn't happen when user implemented
+				response = HttpResponse()
+				response.status_code = 303
+				response['location'] = 'login'
+				return response
+				
 
 		inventoryItem = InventoryType.objects.get(product_name=request.POST['item'])
 		
@@ -96,8 +108,9 @@ def inventory(request):
 		itemCount = int(request.POST['quantity'])
 		#add invoice items to the invoice with the drone
 		for x in range(itemCount):
-			print x
-			inv_item = InvoiceItem(invoice=user_invoice, drone=newDrone, inventory_type=inventoryItem)
+			inv_item = InvoiceItem(invoice=user_invoice, 
+						drone=newDrone, 
+						inventory_type=inventoryItem)
 			inv_item.save()
 		
 		#update the inventory count
@@ -106,7 +119,10 @@ def inventory(request):
 		
 		response = HttpResponse()
 		response.status_code = 303
-		response['location'] = 'inventory'
+		if request.POST['submit'] == 'add and go to checkout':
+			response['location'] = 'checkout'
+		else:
+			response['location'] = 'inventory'
 		return response
 	
 	inventory_items = InventoryType.objects.all()
