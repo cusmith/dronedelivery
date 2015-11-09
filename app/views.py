@@ -54,6 +54,30 @@ def checkout(request):
 	except Invoice.DoesNotExist:
 		#there is no invoice for this user
 		user_invoice = None
+
+	if request.method == 'POST':
+		response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'checkout'
+		if request.POST['submit'] == 'confirm order':
+			#change this to the delivering state
+			if user_invoice is not None:
+				user_invoice.status = 'delivering'
+				user_invoice.save()
+			#redirect away from the checkout page
+			response['location'] = 'status'
+		elif request.POST['submit'] == 'update quantities':
+			#for each item update the count
+			pass
+		elif request.POST['submit'] == 'remove selected':
+			#for each item, if it is marked then remove from invoice
+			pass
+		else:
+			#unknown post
+			print 'Unknown POST submit: ' + request.POST['submit']
+			pass
+
+		return response
 	
 	subtotal = Decimal(0.0)
 	real_cart = []
