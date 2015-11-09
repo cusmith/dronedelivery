@@ -3,6 +3,8 @@ from django.shortcuts import render
 
 from app.models import User, InvoiceItem, Invoice, Drone, InventoryType
 
+from json import dumps
+
 
 def index(request):
 	pending_invoice_items = InvoiceItem.objects.filter(invoice__status='pending')
@@ -43,18 +45,34 @@ def checkout(request):
 
 	fake_cart = []
 	for itype in InventoryType.objects.all():
-		fake_cart.append(type('',(object,),{"type": itype,"count": 3})())
-	context = {"cart_items": fake_cart}
+		fake_cart.append(type('',(object,),{'type': itype,'count': 3})())
+	context = {'cart_items': fake_cart}
 	return render(request, 'app/checkout.html', context)
 
 def status(request):
-	# TODO: integrate with database
-	#
-	#	- Identify the drone carrying the correct order
-	#	- Get drone location as lat/long
-	#
 
-	context = {"drone_location": {"latitude": 48.461211,"longitude": -123.310581}}
+	if 'invoice' not in request.GET:
+		return error404(request)
+
+	invoice_id = request.GET['invoice']
+
+	invoice = Invoice.objects.filter(id=invoice_id)
+
+	if len(invoice) == 0:
+		return error404(request)
+
+	if 'action' in request.GET:
+		if request.GET['action'] == 'update':
+	
+			drones = Drone.objects.all().filter(invoiceitem__invoice=invoice_id).distinct()
+
+			response = HttpResponse(content_type='application/json')
+			response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))
+			return response
+
+	context = {
+		'invoice_id': invoice_id
+	}
 	return render(request, 'app/status.html', context)
 
 def inventory(request):
