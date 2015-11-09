@@ -89,7 +89,7 @@ def inventory(request):
 			user_invoice = Invoice.objects.filter(status='pending').get(user=userid)
 		except Invoice.DoesNotExist:
 			try:
-				user_invoice = Invoice(status='pending', user=userid)
+				user_invoice = Invoice(status='pending', user=User.objects.get(id=userid))
 				user_invoice.save()
 			except ValueError:
 				#user doesn't exist - shouldn't happen when user implemented
