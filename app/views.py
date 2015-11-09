@@ -37,16 +37,34 @@ def register(request):
 def account(request):
 	return render(request, 'app/account.html', {})
 
+@login_required
 def checkout(request):
 	# TODO: integrate with database
 	#
 	#	- Identify the pending invoice belonging to the current user
 	#	- Collect list of InvoiceItems associated with that invoice
 	#
-
+	#todo request.user when the django user model is implemented
+	#userid = request.user
+	userid = 1
+	try:
+		user_invoice = Invoice.objects.filter(status='pending').get(user=userid)
+	except Invoice.DoesNotExist:
+		#there is no invoice for this user
+		user_invoice = None
+	
 	fake_cart = []
-	for itype in InventoryType.objects.all():
-		fake_cart.append(type('',(object,),{'type': itype,'count': 3})())
+	if user_invoice is not None:
+		invoice_items = InvoiceItem.objects.filter(invoice=user_invoice)
+		invoice_types = invoice_items.distinct('inventory_type')
+		for intype in invoice_types:
+			#get the count of items ordered
+			count = invoice_items.filter(inventory_type=intype.inventory_type).count()
+			#get the item description
+			inventory_obj = InventoryType.objects.get(id=intype.inventory_type.id)
+			#display in cart
+			fake_cart.append(type('',(object,),{'type': inventory_obj,'count': count})())
+
 	context = {'cart_items': fake_cart}
 	return render(request, 'app/checkout.html', context)
 
