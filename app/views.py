@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
-from django.contrib.auth.hashers import make_password
 
 from datetime import datetime
 
@@ -32,11 +31,7 @@ def login(request):
 		if user is not None:
 			if user.is_active:
 				auth_login(request,user)
-				
-				response = HttpResponse()
-				response.status_code = 303
-				response['location'] = 'account'
-				return response
+				return render(request,'app/account.html', {})
 
 			else:
 				print("non-active user")
@@ -45,7 +40,10 @@ def login(request):
 
 
 
-		
+		"""response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'account'
+		return response"""
 
 	return render(request, 'app/login.html', {})
 
@@ -70,31 +68,36 @@ def register(request):
 
 		user = User(username=username,password=password,email=email)
 		user.save()
-		user.set_password(user.password)
-		user.save()
 
 		extra = UserProfile(address1=address1,address2=address2,ccn=ccn, ccnexp=ccnexp)
 		extra.user = user
 		extra.save()
 
-		user = authenticate(username=username,password=password)
-		if user is not None:
-			if user.is_active:
-				auth_login(request,user)
-				
-				response = HttpResponse()
-				response.status_code = 303
-				response['location'] = 'account'
-				return response
+		"""user_form = UserForm(data=request.POST)
+		extra_form = UserExtraForm(data=request.POST)
 
-			else:
-				print("non-active user")
-		else:
-			print('incorrect login')
+		if user_form.is_valid() and extra_form.is_valid():
+			user = user_form.save()
+
+			user.set_password(user.password)
+			user.save()
+
+			extra = extra_form.save(commit=False)
+			extra.user = user
+
+			extra.save()
+
+			registered = True"""
+
+		response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'login'
+		return response
 
 	return render(request, 'app/register.html', {})
 
 def account(request):
+	print("boo")
 	if request.user.is_authenticated():
 		print("authenticated")
 	else:
