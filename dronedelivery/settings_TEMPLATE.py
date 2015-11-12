@@ -81,11 +81,12 @@ WSGI_APPLICATION = 'dronedelivery.wsgi.application'
 
 # Uncomment this section to use postgres
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'dronedelivery',
-        'USER': 'Logan', #postgres username
+        'USER': '', #postgres username
         'PASSWORD': '', #postgres password
         'HOST': 'localhost',
         'PORT': '',
@@ -101,6 +102,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+'''
 
 '''
 
