@@ -1,15 +1,19 @@
 from django.db import models
+from django.contrib.auth.models import User
+from datetime import datetime
 
 # Create your models here.
-class User(models.Model):
-	username = models.CharField(max_length=50)
-	name = models.CharField(max_length=50)
-	address = models.CharField(max_length=100)
-	email = models.CharField(max_length=50)
-	phone_number = models.CharField(max_length=10)
+class UserProfile(models.Model):
+	user = models.OneToOneField(User)
+
+	address1 = models.CharField(max_length=100)
+	address2 = models.CharField(max_length=100)
+	ccn = models.CharField(max_length=16)
+	ccnexp = models.DateField()
+
 
 	def __unicode__(self):
-		return self.username
+		return self.user.username
 
 class Invoice(models.Model):
 	STATUS_PENDING = 'pending'
