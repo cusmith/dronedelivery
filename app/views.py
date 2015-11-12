@@ -1,8 +1,15 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth.hashers import make_password
 
-from app.models import User, InvoiceItem, Invoice, Drone, InventoryType
+from datetime import datetime
+
+from app.models import UserProfile, InvoiceItem, Invoice, Drone, InventoryType
+from app.forms import UserForm, UserExtraForm
 
 from json import dumps
 
@@ -16,25 +23,82 @@ def login(request):
 	# Should check for existing login and redirect to account page if found
 
 	if request.method == 'POST':
-		response = HttpResponse()
-		response.status_code = 303
-		response['location'] = 'account'
-		return response
+
+		data = request.POST
+		username = data['username']
+		password = data['password']
+
+		user = authenticate(username=username,password=password)
+		if user is not None:
+			if user.is_active:
+				auth_login(request,user)
+				
+				response = HttpResponse()
+				response.status_code = 303
+				response['location'] = 'account'
+				return response
+
+			else:
+				print("non-active user")
+		else:
+			print('incorrect login')
+
+
+
+		
 
 	return render(request, 'app/login.html', {})
 
 def register(request):
 	# Should check for existing login and prompt for logout if found
 
+	#context = RequestContext(request)
+
+	registered = False
+
 	if request.method == 'POST':
-		response = HttpResponse()
-		response.status_code = 303
-		response['location'] = 'account'
-		return response
+
+		data = request.POST
+
+		username = data['username']
+		password = data['password']
+		email = data['email']
+		address1 = data['address1']
+		address2 = data['address2']
+		ccn = data['ccn']
+		ccnexp = datetime.strptime(data['ccnexp'],'%Y-%m')
+
+		user = User(username=username,password=password,email=email)
+		user.save()
+		user.set_password(user.password)
+		user.save()
+
+		extra = UserProfile(address1=address1,address2=address2,ccn=ccn, ccnexp=ccnexp)
+		extra.user = user
+		extra.save()
+
+		user = authenticate(username=username,password=password)
+		if user is not None:
+			if user.is_active:
+				auth_login(request,user)
+				
+				response = HttpResponse()
+				response.status_code = 303
+				response['location'] = 'account'
+				return response
+
+			else:
+				print("non-active user")
+		else:
+			print('incorrect login')
 
 	return render(request, 'app/register.html', {})
 
 def account(request):
+	if request.user.is_authenticated():
+		print("authenticated")
+	else:
+		print("not authenticated")
 	return render(request, 'app/account.html', {})
 
 def checkout(request):
@@ -134,7 +198,7 @@ def history(request):
 	# invoices = Invoice.objects.filter(status='complete', user=request.user)
 	invoices = Invoice.objects.all()
 	context = {'invoices': invoices}
-	print context
+	print(context)
 	return render(request, 'app/history.html', context)
 
 def css(request):
