@@ -131,7 +131,37 @@ def checkout(request):
 			response['location'] = 'status'
 		elif request.POST['submit'] == 'update quantities':
 			#for each item update the count
-			pass
+			if user_invoice is not None:
+				invoice_items = InvoiceItem.objects.filter(invoice=user_invoice)
+				invoice_types = invoice_items.distinct('inventory_type')
+				for intype in invoice_types:
+					#The POST has a field 'product-name-marked="on"' for each type to be removed
+					# construct the string to lookup and get it from the POST. If it is not present
+					# in the POST then assume this type is not to be removed
+					quantity_str = (intype.inventory_type.product_name).lower().replace(' ','-') + "-quantity"
+					new_count = int(request.POST[quantity_str])
+					items = invoice_items.filter(inventory_type=intype.inventory_type)
+					count = items.count()
+					if new_count > count:
+						#todo Get appropriate drone
+						newDrone = Drone(status='Idle', location='home')
+						newDrone.save()
+
+						#adding items of this type
+						for i in range(new_count - count):
+							inv_item = InvoiceItem(invoice=user_invoice, 
+										drone=newDrone, 
+										inventory_type=intype.inventory_type)
+							inv_item.save()
+						intype.inventory_type.stock_count -= (new_count - count)
+						intype.inventory_type.save()
+						pass
+					elif new_count < count:
+						#removing items of this type
+						pass
+					else:
+						#count is not changed
+						pass
 		elif request.POST['submit'] == 'remove selected':
 			#for each item, if it is marked then remove from invoice
 			if user_invoice is not None:
@@ -144,7 +174,13 @@ def checkout(request):
 					mark_str = (intype.inventory_type.product_name).lower().replace(' ','-') + "-marked"
 					removal = request.POST.get(mark_str, 'off')
 					if removal == 'on':
-						invoice_items.filter(inventory_type=intype.inventory_type).delete()
+						items = invoice_items.filter(inventory_type=intype.inventory_type)
+						#readd count to existing stock
+						count = items.count()
+						intype.inventory_type.stock_count += count
+						intype.inventory_type.save()
+						#remove these items
+						items.delete()
 		else:
 			#unknown post
 			print 'Unknown POST submit: ' + request.POST['submit']
