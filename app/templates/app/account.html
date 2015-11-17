@@ -5,16 +5,16 @@
 
 {% block content %}
 	
-
-	My account<br>
-	<a href='inventory'>View Inventory</a>
-
-	{% if request.user.is_authenticated %}
-		<h1>Authenticated</h1>
-	{% else %}
-		<h1>Not Authenticated</h1>
-	{% endif %}
-
+	My account
+	<br>
+	<br>
+	<a href='status'>View Order Status</a>
+	<br>
+	<br>
+	<a href='inventory'>Make a New Purchase</a>
+	<br>
+	<br>
+	<a href='history'>Purchase History</a>
 
 {% endblock %}
 

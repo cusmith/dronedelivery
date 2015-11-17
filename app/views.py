@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.hashers import make_password
 
@@ -13,15 +13,27 @@ from app.forms import UserForm, UserExtraForm
 
 from json import dumps
 
+# Homepage
+###########
 
 def index(request):
 	pending_invoice_items = InvoiceItem.objects.filter(invoice__status='pending')
 	context = {'pending_invoice_items': pending_invoice_items}
 	return render(request, 'app/index.html', context)
 
-def login(request):
-	# Should check for existing login and redirect to account page if found
+# Account Management
+#####################
 
+# Load the My Account Page
+def account(request):
+	if request.user.is_authenticated():
+		print("authenticated")
+	else:
+		print("not authenticated")
+	return render(request, 'app/account.html', {})
+
+# Load the Login Page (or redirect to My Account if logged in)
+def login(request):
 	if request.method == 'POST':
 
 		data = request.POST
@@ -41,14 +53,11 @@ def login(request):
 			else:
 				print("non-active user")
 		else:
-			print('incorrect login')
-
-
-
-		
+			print('incorrect login')	
 
 	return render(request, 'app/login.html', {})
 
+# Register a new user
 def register(request):
 	# Should check for existing login and prompt for logout if found
 
@@ -94,13 +103,10 @@ def register(request):
 
 	return render(request, 'app/register.html', {})
 
-def account(request):
-	if request.user.is_authenticated():
-		print("authenticated")
-	else:
-		print("not authenticated")
-	return render(request, 'app/account.html', {})
+# Purchases
+############
 
+# Load Checkout Page
 def checkout(request):
 	# TODO: integrate with database
 	#
@@ -114,32 +120,16 @@ def checkout(request):
 	context = {'cart_items': fake_cart}
 	return render(request, 'app/checkout.html', context)
 
-def status(request):
+# Load Purchase History
+def history(request):
+	# Use this line once users get implemented
+	# invoices = Invoice.objects.filter(status='complete', user=request.user)
+	invoices = Invoice.objects.all()
+	context = {'invoices': invoices}
+	print(context)
+	return render(request, 'app/history.html', context)
 
-	if 'invoice' not in request.GET:
-		return error404(request)
-
-	invoice_id = request.GET['invoice']
-
-	invoice = Invoice.objects.filter(id=invoice_id)
-
-	if len(invoice) == 0:
-		return error404(request)
-
-	if 'action' in request.GET:
-		if request.GET['action'] == 'update':
-	
-			drones = Drone.objects.all().filter(invoiceitem__invoice=invoice_id).distinct()
-
-			response = HttpResponse(content_type='application/json')
-			response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))
-			return response
-
-	context = {
-		'invoice_id': invoice_id
-	}
-	return render(request, 'app/status.html', context)
-
+# Load App Inventory Page (for adding to cart)
 @login_required
 def inventory(request):
 	if request.method == 'POST':
@@ -193,16 +183,40 @@ def inventory(request):
 	context = {'inventory_items': inventory_items}
 	return render(request, 'app/inventory.html', context)
 
-def history(request):
-	# Use this line once users get implemented
-	# invoices = Invoice.objects.filter(status='complete', user=request.user)
-	invoices = Invoice.objects.all()
-	context = {'invoices': invoices}
-	print(context)
-	return render(request, 'app/history.html', context)
+# Load Order Status Page
+def status(request):
 
-def css(request):
-	return render(request, request.path[1:], {},content_type='text/css')
+	if 'invoice' not in request.GET:
+		return error404(request)
 
+	invoice_id = request.GET['invoice']
+
+	invoice = Invoice.objects.filter(id=invoice_id)
+
+	if len(invoice) == 0:
+		return error404(request)
+
+	if 'action' in request.GET:
+		if request.GET['action'] == 'update':
+	
+			drones = Drone.objects.all().filter(invoiceitem__invoice=invoice_id).distinct()
+
+			response = HttpResponse(content_type='application/json')
+			response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))
+			return response
+
+	context = {
+		'invoice_id': invoice_id
+	}
+	return render(request, 'app/status.html', context)
+
+# Other
+########
+
+# 404 Page
 def error404(request):
 	return render(request, 'app/error404.html', {'pagepath':request.path})
+
+# CSS
+def css(request):
+	return render(request, request.path[1:], {},content_type='text/css')
