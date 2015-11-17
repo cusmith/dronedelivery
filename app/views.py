@@ -103,10 +103,11 @@ def register(request):
 
 	return render(request, 'app/register.html', {})
 
-# Purchases
+# Purchases (All require login)
 ############
 
 # Load Checkout Page
+@login_required
 def checkout(request):
 	# TODO: integrate with database
 	#
@@ -114,13 +115,22 @@ def checkout(request):
 	#	- Collect list of InvoiceItems associated with that invoice
 	#
 
-	fake_cart = []
-	for itype in InventoryType.objects.all():
-		fake_cart.append(type('',(object,),{'type': itype,'count': 3})())
-	context = {'cart_items': fake_cart}
+	# Get pending invoice for current user
+	cart_invoice = Invoice.get_cart_invoice(request.user)
+
+
+
+	cart_items = cart_invoice.get_item_type_counts()
+
+
+	cart = []
+	for itype, count in cart_items.iteritems():
+		cart.append(type('',(object,),{'type': itype,'count': count})())
+	context = {'cart_items': cart}
 	return render(request, 'app/checkout.html', context)
 
 # Load Purchase History
+@login_required
 def history(request):
 	# Use this line once users get implemented
 	# invoices = Invoice.objects.filter(status='complete', user=request.user)
@@ -133,24 +143,15 @@ def history(request):
 @login_required
 def inventory(request):
 	if request.method == 'POST':
-		#todo request.user when the django user model is implemented
-		#userid = request.user
-		userid = 1
-
 		#get the pending invoice for this user.
 		# if one doesn't exist then create a new one
-		try:
-			user_invoice = Invoice.objects.filter(status='pending').get(user=userid)
-		except Invoice.DoesNotExist:
-			try:
-				user_invoice = Invoice(status='pending', user=User.objects.get(id=userid))
-				user_invoice.save()
-			except ValueError:
-				#user doesn't exist - shouldn't happen when user implemented
-				response = HttpResponse()
-				response.status_code = 303
-				response['location'] = 'login'
-				return response
+		user_invoice = Invoice.get_cart_invoice(request.user)
+
+		if not user_invoice:
+			response = HttpResponse()
+			response.status_code = 303
+			response['location'] = 'login'
+			return response
 				
 
 		inventoryItem = InventoryType.objects.get(product_name=request.POST['item'])
@@ -184,6 +185,7 @@ def inventory(request):
 	return render(request, 'app/inventory.html', context)
 
 # Load Order Status Page
+@login_required
 def status(request):
 
 	if 'invoice' not in request.GET:

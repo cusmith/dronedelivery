@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Count
 from django.contrib.auth.models import User
 from datetime import datetime
 
@@ -29,6 +30,31 @@ class Invoice(models.Model):
 
 	def __unicode__(self):
 		return '%d:%s' % (self.id, self.user)
+
+	def get_item_type_counts(self):
+		invoice_items = InvoiceItem.objects.filter(invoice=self)
+		serialized_items = {}
+		for item in invoice_items:
+			count = serialized_items.setdefault(item.inventory_type, 0)
+			serialized_items[item.inventory_type] = count + 1
+
+		print serialized_items
+		return serialized_items
+
+	@staticmethod
+	def get_cart_invoice(user):
+		pending_invoices = Invoice.objects.filter(user=user, status='pending')
+
+		if len(pending_invoices) > 1:
+			# There should only ever be 1 pending invoice, ***handle this error case better***
+			return None
+
+		elif len(pending_invoices) == 0:
+			cart_invoice = Invoice.objects.create(user=user, status='pending')
+		else:
+			cart_invoice = pending_invoices[0]
+
+		return cart_invoice
 
 class Drone(models.Model):
 	STATUS_IDLE = 'idle'
