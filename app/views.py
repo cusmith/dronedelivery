@@ -114,29 +114,31 @@ def checkout(request):
 	#	- Identify the pending invoice belonging to the current user
 	#	- Collect list of InvoiceItems associated with that invoice
 	#
-
-	# Get pending invoice for current user
 	cart_invoice = Invoice.get_cart_invoice(request.user)
 
+	if request.method == 'GET':
 
+		cart_items = cart_invoice.get_item_type_counts()
 
-	cart_items = cart_invoice.get_item_type_counts()
+		cart = []
+		for itype, count in cart_items.iteritems():
+			cart.append(type('',(object,),{'type': itype,'count': count})())
+		context = {'cart_items': cart}
+		return render(request, 'app/checkout.html', context)
 
+	elif request.method == 'POST':
+		cart_invoice.status = 'delivering'
+		cart_invoice.save()
 
-	cart = []
-	for itype, count in cart_items.iteritems():
-		cart.append(type('',(object,),{'type': itype,'count': count})())
-	context = {'cart_items': cart}
-	return render(request, 'app/checkout.html', context)
+		return render(request, 'app/account.html', {})
 
 # Load Purchase History
 @login_required
 def history(request):
 	# Use this line once users get implemented
 	# invoices = Invoice.objects.filter(status='complete', user=request.user)
-	invoices = Invoice.objects.all()
+	invoices = Invoice.objects.filter(user=request.user, status='completed')
 	context = {'invoices': invoices}
-	print(context)
 	return render(request, 'app/history.html', context)
 
 # Load App Inventory Page (for adding to cart)
@@ -187,31 +189,14 @@ def inventory(request):
 # Load Order Status Page
 @login_required
 def status(request):
-
-	if 'invoice' not in request.GET:
-		return error404(request)
-
-	invoice_id = request.GET['invoice']
-
-	invoice = Invoice.objects.filter(id=invoice_id)
-
-	if len(invoice) == 0:
-		return error404(request)
-
-	if 'action' in request.GET:
-		if request.GET['action'] == 'update':
-	
-			drones = Drone.objects.all().filter(invoiceitem__invoice=invoice_id).distinct()
-
-			response = HttpResponse(content_type='application/json')
-			response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))
-			return response
-
-	context = {
-		'invoice_id': invoice_id
-	}
-	return render(request, 'app/status.html', context)
-
+	if request.method == 'GET':
+		invoices = Invoice.objects.filter(user=request.user, status='delivering')
+		context = {'invoices': invoices}
+		return render(request, 'app/status.html', context)
+	elif request.method == 'POST':
+		invoice_id = int(request.POST['invoice_id'])
+		# Set invoice to completed, reload the page
+		return render(request, 'app/status.html', context)
 # Other
 ########
 
