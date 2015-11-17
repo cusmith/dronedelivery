@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 
-# Create your models here.
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
 
@@ -11,14 +10,13 @@ class UserProfile(models.Model):
 	ccn = models.CharField(max_length=16)
 	ccnexp = models.DateField()
 
-
 	def __unicode__(self):
 		return self.user.username
 
 class Invoice(models.Model):
-	STATUS_PENDING = 'pending'
-	STATUS_DELIVERING = 'delivering'
-	STATUS_COMPLETE = 'complete'
+	STATUS_PENDING = 'pending' # IN CART INVOICE, Can only have 1 pending invoice at a time.
+	STATUS_DELIVERING = 'delivering' # Once a cart purchase is confirmed, set to delivering.
+	STATUS_COMPLETE = 'complete' # Not sure when to set to complete, need to make some logic?
 
 	STATUS_CHOICES = (
 		(STATUS_PENDING, 'Pending'),
@@ -31,7 +29,6 @@ class Invoice(models.Model):
 
 	def __unicode__(self):
 		return '%d:%s' % (self.id, self.user)
-	
 
 class Drone(models.Model):
 	STATUS_IDLE = 'idle'
