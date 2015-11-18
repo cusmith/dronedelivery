@@ -103,6 +103,24 @@ def register(request):
 
 	return render(request, 'app/register.html', {})
 
+def deleteAccount(request):
+	u = User.objects.filter(username=request.user)
+
+	u.delete();
+
+	response = HttpResponse()
+	response.status_code = 303
+	response['location'] = 'login'
+	return response
+
+def logoutUser(request):
+	logout(request)
+	response = HttpResponse()
+	response.status_code = 303
+	response['location'] = 'login'
+	return response
+
+
 # Purchases (All require login)
 ############
 
