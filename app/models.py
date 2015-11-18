@@ -38,7 +38,7 @@ class Invoice(models.Model):
 			count = serialized_items.setdefault(item.inventory_type, 0)
 			serialized_items[item.inventory_type] = count + 1
 
-		print serialized_items
+		print(serialized_items)
 		return serialized_items
 
 	@staticmethod

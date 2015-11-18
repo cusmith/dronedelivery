@@ -10,6 +10,8 @@ urlpatterns = [
     url(r'^account$', views.account, name='account'),
     url(r'^login$', views.login, name='login'),
     url(r'^register$', views.register, name='register'),
+    url(r'^deleteAccount$', views.deleteAccount, name='deleteAccount'),
+    url(r'^logoutUser$', views.logoutUser, name='logoutUser'),
     
     # Purchases
     url(r'^checkout$', views.checkout, name='checkout'),
