@@ -71,7 +71,7 @@ class Invoice(models.Model):
 				return
 			if remove_count > items.count():
 				#remove all the items
-				remove_count = items.len()
+				remove_count = items.count()
 			
 			#delete some or all of the items
 			for x in range(remove_count):
