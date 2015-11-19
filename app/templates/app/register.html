@@ -34,9 +34,13 @@
 				<input id='username-box' class='registration-input' type='text' pattern="[A-Za-z0-9.-]+{6,}$" name='username' oninvalid="try{setCustomValidity('Please enter a username that is at least 6 characters long and only contains letters, numbers, hyphens, and periods.')" onchange="setCustomValidity('')}catch(e){}" required>
 			</div>
 			<div class='registration-item-half'>
-				<div class='registration-item-desc'>
-					username: availible
+				
+			{% if userExists %}
+				<div>
+					User already exists
 				</div>
+			{% endif %}
+				
 			</div>
 		</td></tr>
 		<tr><td>
@@ -76,6 +80,10 @@
 		<input id='submit-button' class='input-box' type="submit" name='submit' value='submit'>
 		</form>
 	</div>
+
+	<!--{% if login %}
+		<h1>Testing</h1>
+	{% endif %}-->
 
 
 {% endblock %}
