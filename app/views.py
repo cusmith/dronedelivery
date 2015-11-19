@@ -126,7 +126,7 @@ def logoutUser(request):
 ############
 
 # Load Checkout Page
-@login_required
+@login_required(login_url='/app/login')
 def checkout(request):
 	userid = request.user
 	try:
@@ -211,7 +211,7 @@ def checkout(request):
 
 
 # Load Purchase History
-@login_required
+@login_required(login_url='/app/login')
 def history(request):
 	# Use this line once users get implemented
 	# invoices = Invoice.objects.filter(status='complete', user=request.user)
@@ -220,7 +220,7 @@ def history(request):
 	return render(request, 'app/history.html', context)
 
 # Load App Inventory Page (for adding to cart)
-@login_required
+@login_required(login_url='/app/login')
 def inventory(request):
 	if request.method == 'POST':
 		#get the pending invoice for this user.
@@ -265,7 +265,7 @@ def inventory(request):
 	return render(request, 'app/inventory.html', context)
 
 # Load Order Status Page
-@login_required
+@login_required(login_url='/app/login')
 def status(request):
 	if request.method == 'GET':
 		invoices = Invoice.objects.filter(user=request.user, status='delivering')
