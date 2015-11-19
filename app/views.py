@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.hashers import make_password
 
+from decimal import *
 from datetime import datetime
 
 from app.models import UserProfile, InvoiceItem, Invoice, Drone, InventoryType
@@ -125,33 +126,92 @@ def logoutUser(request):
 ############
 
 # Load Checkout Page
-@login_required
+@login_required(login_url='/app/login')
 def checkout(request):
-	# TODO: integrate with database
-	#
-	#	- Identify the pending invoice belonging to the current user
-	#	- Collect list of InvoiceItems associated with that invoice
-	#
-	cart_invoice = Invoice.get_cart_invoice(request.user)
+	userid = request.user
+	try:
+		cart_invoice = Invoice.objects.filter(status='pending').get(user=userid)
+	except Invoice.DoesNotExist:
+		response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'login'
+		return response
+	
+	cart_items = cart_invoice.get_item_type_counts()
 
-	if request.method == 'GET':
+	if request.method == 'POST':
+		response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'checkout'
+		if request.POST['submit'] == 'confirm order':
+			#change this to the delivering state
+			cart_invoice.confirm_order()
+			#redirect away from the checkout page
+			response['location'] = 'status'
+		elif request.POST['submit'] == 'update quantities':
+			#for each item update the count
+			for intype, count in cart_items.iteritems():
+				#The POST has a field 'product-name-quantity=###' for each type to be removed
+				# construct the string to lookup and get it from the POST. If it is not present
+				# in the POST then assume this type is not to be removed
+				quantity_str = (intype.product_name).lower().replace(' ','-') + "-quantity"
+				new_count = int(request.POST[quantity_str])
+				
+				if new_count > count:
+					#todo Get appropriate drone
+					newDrone = Drone(status='Idle', location='home')
+					newDrone.save()
 
-		cart_items = cart_invoice.get_item_type_counts()
+					#adding items of this type
+					for i in range(new_count - count):
+						inv_item = InvoiceItem(invoice=cart_invoice, 
+									drone=newDrone, 
+									inventory_type=intype)
+						inv_item.save()
+					intype.stock_count -= (new_count - count)
+					intype.save()
+					pass
+				elif new_count < count:
+					#removing items of this type
+					cart_invoice.remove_type(intype, (count-new_count))
+				else:
+					#count is not changed
+					pass
+		elif request.POST['submit'] == 'remove selected':
+			#for each item, if it is marked then remove from invoice
+			invoice_types = InvoiceItem.objects.filter(invoice=cart_invoice).distinct('inventory_type')
+			for intype in invoice_types:
+				#The POST has a field 'product-name-marked="on"' for each type to be removed
+				# construct the string to lookup and get it from the POST. If it is not present
+				# in the POST then assume this type is not to be removed
+				mark_str = (intype.inventory_type.product_name).lower().replace(' ','-') + "-marked"
+				removal = request.POST.get(mark_str, 'off')
+				if removal == 'on':
+					cart_invoice.remove_type(intype.inventory_type, cart_items[intype.inventory_type])
+		else:
+			#unknown post
+			print 'Unknown POST submit: ' + request.POST['submit']
+			pass
 
-		cart = []
-		for itype, count in cart_items.iteritems():
-			cart.append(type('',(object,),{'type': itype,'count': count})())
-		context = {'cart_items': cart}
-		return render(request, 'app/checkout.html', context)
+		return response
+	
+	subtotal = Decimal(0.0)
+	cart = []
+	for itype, count in cart_items.iteritems():
+		cart.append(type('',(object,),{'type': itype,'count': count})())
+		#get the item description
+		inventory_obj = InventoryType.objects.get(id=itype.id)
+		#add price to subtotal
+		subtotal += Decimal(count) * inventory_obj.price
+	
+	tax = (subtotal * Decimal(0.09)).quantize(Decimal('0.01'), rounding=ROUND_UP)
+	total = subtotal + tax
+	context = {'cart_items': cart, 'subtotal': subtotal, 'tax':tax, 'total':total}
+	return render(request, 'app/checkout.html', context)
 
-	elif request.method == 'POST':
-		cart_invoice.status = 'delivering'
-		cart_invoice.save()
-
-		return render(request, 'app/account.html', {})
 
 # Load Purchase History
-@login_required
+@login_required(login_url='/app/login')
 def history(request):
 	# Use this line once users get implemented
 	# invoices = Invoice.objects.filter(status='complete', user=request.user)
@@ -160,7 +220,7 @@ def history(request):
 	return render(request, 'app/history.html', context)
 
 # Load App Inventory Page (for adding to cart)
-@login_required
+@login_required(login_url='/app/login')
 def inventory(request):
 	if request.method == 'POST':
 		#get the pending invoice for this user.
@@ -205,7 +265,7 @@ def inventory(request):
 	return render(request, 'app/inventory.html', context)
 
 # Load Order Status Page
-@login_required
+@login_required(login_url='/app/login')
 def status(request):
 	if request.method == 'GET':
 		invoices = Invoice.objects.filter(user=request.user, status='delivering')

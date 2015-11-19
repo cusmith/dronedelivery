@@ -41,6 +41,50 @@ class Invoice(models.Model):
 		print(serialized_items)
 		return serialized_items
 
+	def confirm_order(self):
+		#TODO could assign drones at checkout 
+		#if null drone FKs were allowedin the invoice items
+		
+		#Get drones for the order 
+		#newDrone = Drone(status='Idle', location='home')
+		#newDrone.save()
+		#
+		#invoice_items = InvoiceItem.objects.filter(invoice=self)
+		#for item in invoice_items:
+		#	if item.drone == None:
+		#		item.drone = newDrone
+
+		#change this invoice to the delivering state
+		self.status = 'delivering'
+		self.save()
+		return
+
+	#Remove some number of the specified type
+	#Expects: itype - the type of item to be removed
+	#	  remove_count - the number of items to remove
+	def remove_type(self, itype, remove_count):
+		if remove_count > 0:
+			try:
+				items = InvoiceItem.objects.filter(invoice=self).filter(inventory_type=itype)
+			except:
+				#no matching items
+				return
+			if remove_count > items.count():
+				#remove all the items
+				remove_count = items.len()
+			
+			#delete some or all of the items
+			for x in range(remove_count):
+				items[0].delete()
+			
+			#re-add count to existing stock
+			itype.stock_count += remove_count
+			itype.save()
+		else:
+			#not removing anything
+			pass
+		return
+
 	@staticmethod
 	def get_cart_invoice(user):
 		pending_invoices = Invoice.objects.filter(user=user, status='pending')
