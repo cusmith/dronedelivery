@@ -146,10 +146,8 @@ def checkout(request):
 	try:
 		cart_invoice = Invoice.objects.filter(status='pending').get(user=userid)
 	except Invoice.DoesNotExist:
-		response = HttpResponse()
-		response.status_code = 303
-		response['location'] = 'login'
-		return response
+		context = {'cart_items': [], 'subtotal': 0, 'tax':0, 'total':0}
+		return render(request, 'app/checkout.html', context)
 	
 	cart_items = cart_invoice.get_item_type_counts()
 
@@ -212,7 +210,7 @@ def checkout(request):
 	subtotal = Decimal(0.0)
 	cart = []
 	for itype, count in cart_items.iteritems():
-		cart.append(type('',(object,),{'type': itype,'count': count})())
+		cart.append(type('',(object,),{'type': itype,'count': count, 'max':itype.stock_count + count})())
 		#get the item description
 		inventory_obj = InventoryType.objects.get(id=itype.id)
 		#add price to subtotal
