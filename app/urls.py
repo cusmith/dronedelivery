@@ -18,6 +18,7 @@ urlpatterns = [
     url(r'^history$', views.history, name='history'),
     url(r'^inventory$', views.inventory, name='inventory'),
     url(r'^status$', views.status, name='status'),
+    url(r'^details$', views.invoiceDetails, name='invoiceDetails'),
 
     # CSS
     url(r'^app\.css$', views.css, name='css'),
