@@ -146,10 +146,8 @@ def checkout(request):
 	try:
 		cart_invoice = Invoice.objects.filter(status='pending').get(user=userid)
 	except Invoice.DoesNotExist:
-		response = HttpResponse()
-		response.status_code = 303
-		response['location'] = 'login'
-		return response
+		context = {'cart_items': [], 'subtotal': 0, 'tax':0, 'total':0}
+		return render(request, 'app/checkout.html', context)
 	
 	cart_items = cart_invoice.get_item_type_counts()
 
