@@ -31,7 +31,7 @@
 						<p>{{ item.type.product_name }}</p>
 					</td>
 					<td class='cart-item-field field-right'>
-						<input class='input-box cart-quantity' type='number' name='{{ item.type.product_name|slugify }}-quantity' value='{{ item.count }}' min='0' max='{{ item.type.stock_count }}'>
+						<input class='input-box cart-quantity' type='number' name='{{ item.type.product_name|slugify }}-quantity' value='{{ item.count }}' min='0' max='{{ item.max }}'>
 					</td>
 					<td class='cart-item-field field-right'>
 						<p>${{ item.type.price }}</p>
