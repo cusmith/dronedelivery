@@ -1,8 +1,8 @@
 from django.db import models
+from django.db.models import Count
 from django.contrib.auth.models import User
 from datetime import datetime
 
-# Create your models here.
 class UserProfile(models.Model):
 	user = models.OneToOneField(User)
 
@@ -11,14 +11,13 @@ class UserProfile(models.Model):
 	ccn = models.CharField(max_length=16)
 	ccnexp = models.DateField()
 
-
 	def __unicode__(self):
 		return self.user.username
 
 class Invoice(models.Model):
-	STATUS_PENDING = 'pending'
-	STATUS_DELIVERING = 'delivering'
-	STATUS_COMPLETE = 'complete'
+	STATUS_PENDING = 'pending' # IN CART INVOICE, Can only have 1 pending invoice at a time.
+	STATUS_DELIVERING = 'delivering' # Once a cart purchase is confirmed, set to delivering.
+	STATUS_COMPLETE = 'complete' # Not sure when to set to complete, need to make some logic?
 
 	STATUS_CHOICES = (
 		(STATUS_PENDING, 'Pending'),
@@ -31,7 +30,75 @@ class Invoice(models.Model):
 
 	def __unicode__(self):
 		return '%d:%s' % (self.id, self.user)
-	
+
+	def get_item_type_counts(self):
+		invoice_items = InvoiceItem.objects.filter(invoice=self)
+		serialized_items = {}
+		for item in invoice_items:
+			count = serialized_items.setdefault(item.inventory_type, 0)
+			serialized_items[item.inventory_type] = count + 1
+
+		print(serialized_items)
+		return serialized_items
+
+	def confirm_order(self):
+		#TODO could assign drones at checkout 
+		#if null drone FKs were allowedin the invoice items
+		
+		#Get drones for the order 
+		#newDrone = Drone(status='Idle', location='home')
+		#newDrone.save()
+		#
+		#invoice_items = InvoiceItem.objects.filter(invoice=self)
+		#for item in invoice_items:
+		#	if item.drone == None:
+		#		item.drone = newDrone
+
+		#change this invoice to the delivering state
+		self.status = 'delivering'
+		self.save()
+		return
+
+	#Remove some number of the specified type
+	#Expects: itype - the type of item to be removed
+	#	  remove_count - the number of items to remove
+	def remove_type(self, itype, remove_count):
+		if remove_count > 0:
+			try:
+				items = InvoiceItem.objects.filter(invoice=self).filter(inventory_type=itype)
+			except:
+				#no matching items
+				return
+			if remove_count > items.count():
+				#remove all the items
+				remove_count = items.len()
+			
+			#delete some or all of the items
+			for x in range(remove_count):
+				items[0].delete()
+			
+			#re-add count to existing stock
+			itype.stock_count += remove_count
+			itype.save()
+		else:
+			#not removing anything
+			pass
+		return
+
+	@staticmethod
+	def get_cart_invoice(user):
+		pending_invoices = Invoice.objects.filter(user=user, status='pending')
+
+		if len(pending_invoices) > 1:
+			# There should only ever be 1 pending invoice, ***handle this error case better***
+			return None
+
+		elif len(pending_invoices) == 0:
+			cart_invoice = Invoice.objects.create(user=user, status='pending')
+		else:
+			cart_invoice = pending_invoices[0]
+
+		return cart_invoice
 
 class Drone(models.Model):
 	STATUS_IDLE = 'idle'

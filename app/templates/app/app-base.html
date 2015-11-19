@@ -51,11 +51,14 @@
 				<span id='page-title' class='h2'>| {% block short_title %}{% endblock %}</span>
 			</div>
 			<div id='session-status-box'>
-				{% if logged_in %}
-
+				{% if request.user.is_authenticated %}
+					<a href='account'>My Account</a>&nbsp&nbsp
+					<a href='checkout'>My Cart (Checkout)</a>&nbsp&nbsp
+					<a href='logoutUser'>Log Out</a>
 				{% else %}
-					<a href='login'>Log in.</a>
+					<a href='login'>Log in</a>
 				{% endif %}
+
 			</div>
 		</div>
 	</div>

@@ -92,6 +92,7 @@ DATABASES = {
         'PORT': '',
     }
 }
+"""
 
 '''
 # Uncomment this section to use sqlite3 (works without setup - can use for local testing)
@@ -104,7 +105,7 @@ DATABASES = {
 }
 '''
 
-'''
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
