@@ -35,6 +35,7 @@ def account(request):
 
 # Load the Login Page (or redirect to My Account if logged in)
 def login(request):
+	loginFailed = False
 	if request.method == 'POST':
 
 		data = request.POST
@@ -52,11 +53,13 @@ def login(request):
 				return response
 
 			else:
+				loginFailed = True
 				print("non-active user")
 		else:
-			print('incorrect login')	
+			loginFailed = True
+			print("incorrect login")
 
-	return render(request, 'app/login.html', {})
+	return render(request, 'app/login.html', {"loginFailed":loginFailed})
 
 # Register a new user
 def register(request):
@@ -65,44 +68,55 @@ def register(request):
 	#context = RequestContext(request)
 
 	registered = False
+	userExists = False
 
 	if request.method == 'POST':
 
 		data = request.POST
 
 		username = data['username']
-		password = data['password']
-		email = data['email']
-		address1 = data['address1']
-		address2 = data['address2']
-		ccn = data['ccn']
-		ccnexp = datetime.strptime(data['ccnexp'],'%Y-%m')
 
-		user = User(username=username,password=password,email=email)
-		user.save()
-		user.set_password(user.password)
-		user.save()
+		u = User.objects.filter(username=username)
+		print(u)
 
-		extra = UserProfile(address1=address1,address2=address2,ccn=ccn, ccnexp=ccnexp)
-		extra.user = user
-		extra.save()
+		if u == "[]":
 
-		user = authenticate(username=username,password=password)
-		if user is not None:
-			if user.is_active:
-				auth_login(request,user)
-				
-				response = HttpResponse()
-				response.status_code = 303
-				response['location'] = 'account'
-				return response
+			password = data['password']
+			email = data['email']
+			address1 = data['address1']
+			address2 = data['address2']
+			ccn = data['ccn'].replace(" ","")
+			ccnexp = datetime.strptime(data['ccnexp'],'%Y-%m')
 
+			user = User(username=username,password=password,email=email)
+			user.save()
+			user.set_password(user.password)
+			user.save()
+
+			extra = UserProfile(address1=address1,address2=address2,ccn=ccn, ccnexp=ccnexp)
+			extra.user = user
+			extra.save()
+
+			user = authenticate(username=username,password=password)
+			if user is not None:
+				if user.is_active:
+					auth_login(request,user)
+					
+					response = HttpResponse()
+					response.status_code = 303
+					response['location'] = 'account'
+					return response
+
+				else:
+					print("non-active user")
 			else:
-				print("non-active user")
-		else:
-			print('incorrect login')
+				print('incorrect login')
 
-	return render(request, 'app/register.html', {})
+		else:
+			userExists = True
+
+
+	return render(request, 'app/register.html', {"userExists":userExists})
 
 def deleteAccount(request):
 	u = User.objects.filter(username=request.user)
