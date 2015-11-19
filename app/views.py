@@ -198,7 +198,7 @@ def checkout(request):
 	subtotal = Decimal(0.0)
 	cart = []
 	for itype, count in cart_items.iteritems():
-		cart.append(type('',(object,),{'type': itype,'count': count})())
+		cart.append(type('',(object,),{'type': itype,'count': count, 'max':itype.stock_count + count})())
 		#get the item description
 		inventory_obj = InventoryType.objects.get(id=itype.id)
 		#add price to subtotal
