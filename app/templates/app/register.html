@@ -52,8 +52,23 @@
 			</div>
 			<div class='registration-item-half'>
 				<div class='registration-item-desc'>
-					password strength: strong
+					password strength: <span id='pass-strength'></span>
 				</div>
+				<script type='text/javascript'>
+$('#password-box').keypress(function() {
+	var passText = $('#password-box').val();
+	if (passText.length > 10) {
+		$('#pass-strength').text("strong");
+		$('#pass-strength').css("color","#11cc11");
+	} else if (passText.length > 5) {
+		$('#pass-strength').text("medium");
+		$('#pass-strength').css("color","#1111cc");
+	} else {
+		$('#pass-strength').text("weak");
+		$('#pass-strength').css("color","#cc1111");
+	}
+});
+				</script>
 			</div>
 		</td></tr>
 		<tr><td>
