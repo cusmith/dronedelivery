@@ -18,7 +18,8 @@ urlpatterns = [
     url(r'^history$', views.history, name='history'),
     url(r'^inventory$', views.inventory, name='inventory'),
     url(r'^status$', views.status, name='status'),
-    url(r'^details$', views.invoiceDetails, name='invoiceDetails'),
+    url(r'^details$', views.details, name='details'),
+    url(r'^details/(?P<invoice>[0-9]+)/$', views.details, name='details'),
 
     # CSS
     url(r'^app\.css$', views.css, name='css'),

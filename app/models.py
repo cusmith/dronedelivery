@@ -44,7 +44,7 @@ class Invoice(models.Model):
 	def confirm_order(self):
 		#TODO could assign drones at checkout 
 		#if null drone FKs were allowedin the invoice items
-		
+		print 'we trying this?'
 		#Get drones for the order 
 		drone = Drone.assign_drone()
 		if not drone:
@@ -52,12 +52,13 @@ class Invoice(models.Model):
 
 		invoice_items = InvoiceItem.objects.filter(invoice=self)
 		for item in invoice_items:
-			item.drone = newDrone
+			item.drone = drone
 			item.save()
 
 		#change this invoice to the delivering state
-		self.status = STATUS_DELIVERING
+		self.status = Invoice.STATUS_DELIVERING
 		self.save()
+		print 'order confirmed'
 		return
 
 	#Remove some number of the specified type
@@ -87,7 +88,7 @@ class Invoice(models.Model):
 		return
 
 	def complete_invoice(self):
-		invoice.status = STATUS_COMPLETE
+		invoice.status = Invoice.STATUS_COMPLETE
 
 		items = InvoiceItems.objects.filter(invoice=self)
 		for item in items:
@@ -99,14 +100,14 @@ class Invoice(models.Model):
 
 	@staticmethod
 	def get_cart_invoice(user):
-		pending_invoices = Invoice.objects.filter(user=user, status=STATUS_PENDING)
+		pending_invoices = Invoice.objects.filter(user=user, status=Invoice.STATUS_PENDING)
 
 		if len(pending_invoices) > 1:
 			# There should only ever be 1 pending invoice, ***handle this error case better***
 			return None
 
 		elif len(pending_invoices) == 0:
-			cart_invoice = Invoice.objects.create(user=user, status=STATUS_PENDING)
+			cart_invoice = Invoice.objects.create(user=user, status=Invoice.STATUS_PENDING)
 		else:
 			cart_invoice = pending_invoices[0]
 
@@ -135,10 +136,10 @@ class Drone(models.Model):
 
 	@staticmethod
 	def assign_drone():
-		available_drones = Drone.objects.filter(status=STATUS_IDLE, location=HOME)
+		available_drones = Drone.objects.filter(status=Drone.STATUS_IDLE)
 		if available_drones:
 			assign_drone = available_drones[0]
-			assign_drone.status = STATUS_DELIVERING
+			assign_drone.status = Drone.STATUS_DELIVERING
 			assign_drone.save()
 			return assign_drone
 		else:

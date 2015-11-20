@@ -283,11 +283,9 @@ def status(request):
 		return render(request, 'app/status.html', context)
 
 @login_required(login_url='/app/login')
-def invoiceDetails(request):
-	if 'invoice' not in request.GET:
-		return error404(request)
-	invoice_id = request.GET['invoice']
-	invoice = Invoice.objects.filter(id=invoice_id)
+def details(request, invoice):
+	print invoice
+	invoice = Invoice.objects.filter(id=invoice)
 	if len(invoice) == 0:		
 		return error404(request)		
 		
@@ -301,9 +299,9 @@ def invoiceDetails(request):
 			return response		
 		
 	context = {		
-		'invoice_id': invoice_id		
+		'invoice_id': None		
 	}		
-	return render(request, 'app/status.html', context)
+	return render(request, 'app/details.html', context)
 
 # Other
 ########
