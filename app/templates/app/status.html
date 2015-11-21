@@ -19,8 +19,14 @@
 						<br>
 					{% endfor %}
 				</ul>
+				<a href='details/{{ invoice.id }}/'>Details</a>
+				<form id="myform" method="post" action="/app/status">
+		            {% csrf_token %}
+		            <input type="hidden" name="invoice_id" value="{{ invoice.id }}" />
+		            <a href="#" onclick="document.forms[0].submit();return false;">Have Received This Order</a>
+		        </form>
 			</div>
-			<a href='details/{{ invoice.id }}/'>Details</a>
+			
 		{% endfor %}
 		</ul>
 	{% endif %}

@@ -227,7 +227,7 @@ def checkout(request):
 def history(request):
 	# Use this line once users get implemented
 	# invoices = Invoice.objects.filter(status='complete', user=request.user)
-	invoices = Invoice.objects.filter(user=request.user, status='completed')
+	invoices = Invoice.objects.filter(user=request.user, status=Invoice.STATUS_COMPLETE)
 	context = {'invoices': invoices}
 	return render(request, 'app/history.html', context)
 
@@ -272,15 +272,16 @@ def inventory(request):
 
 # Load Order Status Page
 @login_required(login_url='/app/login')
-def status(request):
-	if request.method == 'GET':
-		invoices = Invoice.objects.filter(user=request.user, status='delivering')
-		context = {'invoices': invoices}
-		return render(request, 'app/status.html', context)
-	elif request.method == 'POST':
+def status(request):	
+	if request.method == 'POST':
 		invoice_id = int(request.POST['invoice_id'])
-		# Set invoice to completed, reload the page
-		return render(request, 'app/status.html', context)
+		invoice = Invoice.objects.get(id=invoice_id)
+		invoice.status = Invoice.STATUS_COMPLETE
+		invoice.save()
+
+	invoices = Invoice.objects.filter(user=request.user, status='delivering')
+	context = {'invoices': invoices}
+	return render(request, 'app/status.html', context)
 
 @login_required(login_url='/app/login')
 def details(request, invoice=None):
