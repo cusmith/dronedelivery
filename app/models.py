@@ -40,6 +40,15 @@ class Invoice(models.Model):
 
 		return serialized_items
 
+	def get_item_type_counts_by_name(self):
+		invoice_items = InvoiceItem.objects.filter(invoice=self)
+		serialized_items = {}
+		for item in invoice_items:
+			count = serialized_items.setdefault(item.inventory_type.product_name, 0)
+			serialized_items[item.inventory_type.product_name] = count + 1
+
+		return serialized_items
+
 	def confirm_order(self):
 
 		#Get drones for the order 
@@ -84,14 +93,14 @@ class Invoice(models.Model):
 		return
 
 	def complete_invoice(self):
-		invoice.status = Invoice.STATUS_COMPLETE
-
-		items = InvoiceItems.objects.filter(invoice=self)
+		items = InvoiceItem.objects.filter(invoice=self)
 		for item in items:
 			if item.drone.status == Drone.STATUS_DELIVERING:
 				item.drone.status = Drone.STATUS_IDLE
 				item.drone.save()
 
+		self.status = Invoice.STATUS_COMPLETE
+		self.save()
 		return
 
 	@staticmethod

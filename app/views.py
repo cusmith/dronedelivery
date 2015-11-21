@@ -275,12 +275,17 @@ def inventory(request):
 def status(request):	
 	if request.method == 'POST':
 		invoice_id = int(request.POST['invoice_id'])
+		print invoice_id
+		print request
 		invoice = Invoice.objects.get(id=invoice_id)
-		invoice.status = Invoice.STATUS_COMPLETE
-		invoice.save()
+		invoice.complete_invoice()
 
-	invoices = Invoice.objects.filter(user=request.user, status='delivering')
-	context = {'invoices': invoices}
+	invoices = Invoice.objects.filter(user=request.user, status=Invoice.STATUS_DELIVERING)
+	serialized_invoices = {}
+	for invoice in invoices:
+		serialized_invoices[invoice] = invoice.get_item_type_counts_by_name()
+	context = {'invoices': serialized_invoices}
+	print context
 	return render(request, 'app/status.html', context)
 
 @login_required(login_url='/app/login')
