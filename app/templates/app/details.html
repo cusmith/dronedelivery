@@ -1,0 +1,21 @@
+{% extends "app/app-base.html" %}
+
+{% block title %}details{% endblock %}
+{% block short_title %}details{% endblock %}
+
+{% block content %}
+
+	Displaying invoice #: {{ invoice_id }}
+	<script type='text/javascript' src='/static/app/googleapikey.js'></script>		+	Active Orders
+	<script type="text/javascript">		
+	var invoice_id = {{ invoice_id }}		
+	</script>		
+	<script type='text/javascript' src='/static/app/map.js'></script>		
+			
+		
+	<h3>order status | <span id='status'>...</span></h3>		
+	<div id='map'></div>		
+		
+	<a href='history#invoice-{{ invoice_id }}'>go to invoice details</a>
+
+{% endblock %}

@@ -248,16 +248,10 @@ def inventory(request):
 
 		inventoryItem = InventoryType.objects.get(product_name=request.POST['item'])
 		
-		#todo get appropriate drone
-		newDrone = Drone(status='Idle', location='home')
-		newDrone.save()
-		
 		itemCount = int(request.POST['quantity'])
 		#add invoice items to the invoice with the drone
 		for x in range(itemCount):
-			inv_item = InvoiceItem(invoice=user_invoice, 
-						drone=newDrone, 
-						inventory_type=inventoryItem)
+			inv_item = InvoiceItem(invoice=user_invoice, inventory_type=inventoryItem)
 			inv_item.save()
 		
 		#update the inventory count
@@ -287,13 +281,30 @@ def status(request):
 		invoice_id = int(request.POST['invoice_id'])
 		# Set invoice to completed, reload the page
 		return render(request, 'app/status.html', context)
+
+@login_required(login_url='/app/login')
+def details(request, invoice=None):
+
+	if not invoice:		
+		return error404(request)		
+		
+	# if 'action' in request.GET:		
+	# 	if request.GET['action'] == 'update':		
+			
+	# 		drones = Drone.objects.all().filter(invoiceitem__invoice=invoice_id).distinct()		
+		
+	# 		response = HttpResponse(content_type='application/json')		
+	# 		response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))		
+	# 		return response		
+		
+	context = {		
+		'invoice_id': invoice		
+	}		
+	return render(request, 'app/details.html', context)
+
 # Other
 ########
 
 # 404 Page
 def error404(request):
 	return render(request, 'app/error404.html', {'pagepath':request.path})
-
-# CSS
-def css(request):
-	return render(request, request.path[1:], {},content_type='text/css')

@@ -38,24 +38,22 @@ class Invoice(models.Model):
 			count = serialized_items.setdefault(item.inventory_type, 0)
 			serialized_items[item.inventory_type] = count + 1
 
-		print(serialized_items)
 		return serialized_items
 
 	def confirm_order(self):
-		#TODO could assign drones at checkout 
-		#if null drone FKs were allowedin the invoice items
-		
+
 		#Get drones for the order 
-		#newDrone = Drone(status='Idle', location='home')
-		#newDrone.save()
-		#
-		#invoice_items = InvoiceItem.objects.filter(invoice=self)
-		#for item in invoice_items:
-		#	if item.drone == None:
-		#		item.drone = newDrone
+		drone = Drone.assign_drone()
+		if not drone:
+			return False
+
+		invoice_items = InvoiceItem.objects.filter(invoice=self)
+		for item in invoice_items:
+			item.drone = drone
+			item.save()
 
 		#change this invoice to the delivering state
-		self.status = 'delivering'
+		self.status = Invoice.STATUS_DELIVERING
 		self.save()
 		return
 
@@ -85,22 +83,35 @@ class Invoice(models.Model):
 			pass
 		return
 
+	def complete_invoice(self):
+		invoice.status = Invoice.STATUS_COMPLETE
+
+		items = InvoiceItems.objects.filter(invoice=self)
+		for item in items:
+			if item.drone.status == Drone.STATUS_DELIVERING:
+				item.drone.status = Drone.STATUS_IDLE
+				item.drone.save()
+
+		return
+
 	@staticmethod
 	def get_cart_invoice(user):
-		pending_invoices = Invoice.objects.filter(user=user, status='pending')
+		pending_invoices = Invoice.objects.filter(user=user, status=Invoice.STATUS_PENDING)
 
 		if len(pending_invoices) > 1:
 			# There should only ever be 1 pending invoice, ***handle this error case better***
 			return None
 
 		elif len(pending_invoices) == 0:
-			cart_invoice = Invoice.objects.create(user=user, status='pending')
+			cart_invoice = Invoice.objects.create(user=user, status=Invoice.STATUS_PENDING)
 		else:
 			cart_invoice = pending_invoices[0]
 
 		return cart_invoice
 
 class Drone(models.Model):
+	HOME = '12.34, 12.34'
+
 	STATUS_IDLE = 'idle'
 	STATUS_DELIVERING = 'delivering'
 	STATUS_RETURNING = 'returning'
@@ -119,6 +130,17 @@ class Drone(models.Model):
 	def __unicode__(self):
 		return '%d:%s' % (self.id, self.status)
 
+	@staticmethod
+	def assign_drone():
+		available_drones = Drone.objects.filter(status=Drone.STATUS_IDLE)
+		if available_drones:
+			assign_drone = available_drones[0]
+			assign_drone.status = Drone.STATUS_DELIVERING
+			assign_drone.save()
+			return assign_drone
+		else:
+			return None
+
 class InventoryType(models.Model):
 	product_name = models.CharField(max_length=50)
 	stock_count = models.IntegerField(default=0)
@@ -130,7 +152,7 @@ class InventoryType(models.Model):
 
 class InvoiceItem(models.Model):
 	invoice = models.ForeignKey(Invoice)
-	drone = models.ForeignKey(Drone)
+	drone = models.ForeignKey(Drone, null=True)
 	inventory_type = models.ForeignKey(InventoryType)
 
 	def __unicode__(self):

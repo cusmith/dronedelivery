@@ -4,7 +4,8 @@
 	<meta charset='utf-8'>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"></meta>
 	<title>{% block title %}{% endblock %} | drone delivery service</title>
-	<link rel="stylesheet" type="text/css" href="app.css"></link>
+	{% load staticfiles %}
+	<link rel="stylesheet" type="text/css" href="{% static 'app/app.css' %}" />
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
 	var long_width = 0;
@@ -52,11 +53,11 @@
 			</div>
 			<div id='session-status-box'>
 				{% if request.user.is_authenticated %}
-					<a href='account'>My Account</a>&nbsp&nbsp
-					<a href='checkout'>My Cart (Checkout)</a>&nbsp&nbsp
-					<a href='logoutUser'>Log Out</a>
+					<a href='/app/account'>My Account</a>&nbsp&nbsp
+					<a href='/app/checkout'>My Cart (Checkout)</a>&nbsp&nbsp
+					<a href='/app/logoutUser'>Log Out</a>
 				{% else %}
-					<a href='login'>Log in</a>
+					<a href='/app/login'>Log in</a>
 				{% endif %}
 
 			</div>
