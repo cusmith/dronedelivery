@@ -283,23 +283,22 @@ def status(request):
 		return render(request, 'app/status.html', context)
 
 @login_required(login_url='/app/login')
-def details(request, invoice):
-	print invoice
-	invoice = Invoice.objects.filter(id=invoice)
-	if len(invoice) == 0:		
+def details(request, invoice=None):
+
+	if not invoice:		
 		return error404(request)		
 		
-	if 'action' in request.GET:		
-		if request.GET['action'] == 'update':		
+	# if 'action' in request.GET:		
+	# 	if request.GET['action'] == 'update':		
 			
-			drones = Drone.objects.all().filter(invoiceitem__invoice=invoice_id).distinct()		
+	# 		drones = Drone.objects.all().filter(invoiceitem__invoice=invoice_id).distinct()		
 		
-			response = HttpResponse(content_type='application/json')		
-			response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))		
-			return response		
+	# 		response = HttpResponse(content_type='application/json')		
+	# 		response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))		
+	# 		return response		
 		
 	context = {		
-		'invoice_id': None		
+		'invoice_id': invoice		
 	}		
 	return render(request, 'app/details.html', context)
 
