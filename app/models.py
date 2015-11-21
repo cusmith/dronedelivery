@@ -38,13 +38,10 @@ class Invoice(models.Model):
 			count = serialized_items.setdefault(item.inventory_type, 0)
 			serialized_items[item.inventory_type] = count + 1
 
-		print(serialized_items)
 		return serialized_items
 
 	def confirm_order(self):
-		#TODO could assign drones at checkout 
-		#if null drone FKs were allowedin the invoice items
-		print 'we trying this?'
+
 		#Get drones for the order 
 		drone = Drone.assign_drone()
 		if not drone:
@@ -58,7 +55,6 @@ class Invoice(models.Model):
 		#change this invoice to the delivering state
 		self.status = Invoice.STATUS_DELIVERING
 		self.save()
-		print 'order confirmed'
 		return
 
 	#Remove some number of the specified type

@@ -21,9 +21,6 @@ urlpatterns = [
     url(r'^details$', views.details, name='details'),
     url(r'^details/(?P<invoice>[0-9]+)/$', views.details, name='details'),
 
-    # CSS
-    url(r'^app\.css$', views.css, name='css'),
-
     # 404
     url(r'.*', views.error404, name='error404'),
     

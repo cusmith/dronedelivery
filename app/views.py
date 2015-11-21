@@ -308,7 +308,3 @@ def details(request, invoice=None):
 # 404 Page
 def error404(request):
 	return render(request, 'app/error404.html', {'pagepath':request.path})
-
-# CSS
-def css(request):
-	return render(request, request.path[1:], {},content_type='text/css')
