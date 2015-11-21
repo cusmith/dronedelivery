@@ -228,7 +228,10 @@ def history(request):
 	# Use this line once users get implemented
 	# invoices = Invoice.objects.filter(status='complete', user=request.user)
 	invoices = Invoice.objects.filter(user=request.user, status=Invoice.STATUS_COMPLETE)
-	context = {'invoices': invoices}
+	serialized_invoices = {}
+	for invoice in invoices:
+		serialized_invoices[invoice] = invoice.get_item_type_counts_by_name()
+	context = {'invoices': serialized_invoices}
 	return render(request, 'app/history.html', context)
 
 # Load App Inventory Page (for adding to cart)
@@ -285,7 +288,6 @@ def status(request):
 	for invoice in invoices:
 		serialized_invoices[invoice] = invoice.get_item_type_counts_by_name()
 	context = {'invoices': serialized_invoices}
-	print context
 	return render(request, 'app/status.html', context)
 
 @login_required(login_url='/app/login')
