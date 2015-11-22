@@ -141,6 +141,9 @@ body {
   width: 200px;
   text-align: center; }
 
+.bad-password {
+  color: #cc1111; }
+
 .registration-item, .registration-item-half {
   float: left;
   min-height: 3rem;
