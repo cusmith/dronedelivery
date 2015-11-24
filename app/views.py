@@ -79,14 +79,14 @@ def register(request):
 		u = User.objects.filter(username=username)
 		print(u)
 
-		if not u.exists():
-			print("OK")
+		if u == "[]":
+
 			password = data['password']
 			email = data['email']
 			address1 = data['address1']
 			address2 = data['address2']
 			ccn = data['ccn'].replace(" ","")
-			ccnexp = datetime.strptime(data['ccnexp'],'%m/%Y')
+			ccnexp = datetime.strptime(data['ccnexp'],'%Y-%m')
 
 			user = User(username=username,password=password,email=email)
 			user.save()
@@ -296,14 +296,14 @@ def details(request, invoice=None):
 	if not invoice:		
 		return error404(request)		
 		
-	# if 'action' in request.GET:		
-	# 	if request.GET['action'] == 'update':		
+	if 'action' in request.GET:		
+		if request.GET['action'] == 'update':		
 			
-	# 		drones = Drone.objects.all().filter(invoiceitem__invoice=invoice_id).distinct()		
+	 		drones = Drone.objects.all().filter(invoiceitem__invoice=invoice).distinct()		
 		
-	# 		response = HttpResponse(content_type='application/json')		
-	# 		response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))		
-	# 		return response		
+	 		response = HttpResponse(content_type='application/json')		
+	 		response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))		
+	 		return response		
 		
 	context = {		
 		'invoice_id': invoice		

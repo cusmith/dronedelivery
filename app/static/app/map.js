@@ -2,7 +2,6 @@ var map = null;
 var markers = [];
 
 function initalizeMap() {
-	console.log('woo!');
 	map = new google.maps.Map(document.getElementById('map'),{
 		backgroundColor: '#ffffff',
 		mapTypeId: 'terrain',
@@ -43,7 +42,7 @@ function strToLatLng(str) {
 
 function update() {
 	$.ajax({
-		'url' : 'status',
+		'url' : '',
 		'dataType' : 'json',
 		'data' : {
 			'action' : 'update',
