@@ -268,7 +268,7 @@ def inventory(request):
 		if request.POST['submit'] == 'add and go to checkout':
 			response['location'] = 'checkout'
 		else:
-			response['location'] = 'inventory'
+			response['location'] = 'inventory#body'
 		return response
 	
 	inventory_items = InventoryType.objects.all()
