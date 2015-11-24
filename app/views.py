@@ -79,14 +79,14 @@ def register(request):
 		u = User.objects.filter(username=username)
 		print(u)
 
-		if u == "[]":
-
+		if not u.exists():
+			print("OK")
 			password = data['password']
 			email = data['email']
 			address1 = data['address1']
 			address2 = data['address2']
 			ccn = data['ccn'].replace(" ","")
-			ccnexp = datetime.strptime(data['ccnexp'],'%Y-%m')
+			ccnexp = datetime.strptime(data['ccnexp'],'%m/%Y')
 
 			user = User(username=username,password=password,email=email)
 			user.save()
