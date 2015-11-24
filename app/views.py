@@ -81,6 +81,8 @@ def register(request):
 
 		if not u.exists():
 			print("OK")
+
+
 			password = data['password']
 			email = data['email']
 			address1 = data['address1']
@@ -296,14 +298,14 @@ def details(request, invoice=None):
 	if not invoice:		
 		return error404(request)		
 		
-	# if 'action' in request.GET:		
-	# 	if request.GET['action'] == 'update':		
+	if 'action' in request.GET:		
+		if request.GET['action'] == 'update':		
 			
-	# 		drones = Drone.objects.all().filter(invoiceitem__invoice=invoice_id).distinct()		
+	 		drones = Drone.objects.all().filter(invoiceitem__invoice=invoice).distinct()		
 		
-	# 		response = HttpResponse(content_type='application/json')		
-	# 		response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))		
-	# 		return response		
+	 		response = HttpResponse(content_type='application/json')		
+	 		response.write(dumps(sum(map(lambda drone: [drone],drones.values()),[])))		
+	 		return response		
 		
 	context = {		
 		'invoice_id': invoice		
