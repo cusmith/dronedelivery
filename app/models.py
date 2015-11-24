@@ -119,7 +119,7 @@ class Invoice(models.Model):
 		return cart_invoice
 
 class Drone(models.Model):
-	HOME = '12.34, 12.34'
+	HOME = '48.463101, -123.313743'
 
 	STATUS_IDLE = 'idle'
 	STATUS_DELIVERING = 'delivering'
