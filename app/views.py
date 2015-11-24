@@ -88,7 +88,7 @@ def register(request):
 			address1 = data['address1']
 			address2 = data['address2']
 			ccn = data['ccn'].replace(" ","")
-			ccnexp = datetime.strptime(data['ccnexp'],'%m/%Y')
+			ccnexp = datetime.strptime(data['ccnexp'],'%Y-%m')
 
 			user = User(username=username,password=password,email=email)
 			user.save()
