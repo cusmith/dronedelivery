@@ -35,6 +35,13 @@ def account(request):
 
 # Load the Login Page (or redirect to My Account if logged in)
 def login(request):
+
+	if request.user.is_authenticated():
+		response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'account'
+		return response
+
 	loginFailed = False
 	if request.method == 'POST':
 
@@ -61,13 +68,15 @@ def login(request):
 
 	return render(request, 'app/login.html', {"loginFailed":loginFailed})
 
-# Register a new user
+# Register a new user (or redirect to My Account if logged in)
 def register(request):
-	# Should check for existing login and prompt for logout if found
+	
+	if request.user.is_authenticated():
+		response = HttpResponse()
+		response.status_code = 303
+		response['location'] = 'account'
+		return response
 
-	#context = RequestContext(request)
-
-	registered = False
 	userExists = False
 
 	if request.method == 'POST':
@@ -82,7 +91,8 @@ def register(request):
 		if not u.exists():
 			print("OK")
 
-
+			first_name = data['firstname']
+			last_name = data['lastname']
 			password = data['password']
 			email = data['email']
 			address1 = data['address1']
@@ -90,7 +100,7 @@ def register(request):
 			ccn = data['ccn'].replace(" ","")
 			ccnexp = datetime.strptime(data['ccnexp'],'%Y-%m')
 
-			user = User(username=username,password=password,email=email)
+			user = User(username=username,password=password,email=email,first_name=first_name,last_name=last_name)
 			user.save()
 			user.set_password(user.password)
 			user.save()
@@ -120,6 +130,7 @@ def register(request):
 
 	return render(request, 'app/register.html', {"userExists":userExists})
 
+# Delete user from database and redirect to login page
 def deleteAccount(request):
 	u = User.objects.filter(username=request.user)
 
@@ -130,6 +141,7 @@ def deleteAccount(request):
 	response['location'] = 'login'
 	return response
 
+# Log user out and redirect to login page
 def logoutUser(request):
 	logout(request)
 	response = HttpResponse()
@@ -204,7 +216,7 @@ def checkout(request):
 					cart_invoice.remove_type(intype.inventory_type, cart_items[intype.inventory_type])
 		else:
 			#unknown post
-			print 'Unknown POST submit: ' + request.POST['submit']
+			print('Unknown POST submit: ' + request.POST['submit'])
 			pass
 
 		return response
@@ -280,8 +292,8 @@ def inventory(request):
 def status(request):	
 	if request.method == 'POST':
 		invoice_id = int(request.POST['invoice_id'])
-		print invoice_id
-		print request
+		print (invoice_id)
+		print (request)
 		invoice = Invoice.objects.get(id=invoice_id)
 		invoice.complete_invoice()
 
