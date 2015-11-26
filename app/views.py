@@ -27,10 +27,6 @@ def index(request):
 
 # Load the My Account Page
 def account(request):
-	if request.user.is_authenticated():
-		print("authenticated")
-	else:
-		print("not authenticated")
 	return render(request, 'app/account.html', {})
 
 # Load the Login Page (or redirect to My Account if logged in)
@@ -61,10 +57,8 @@ def login(request):
 
 			else:
 				loginFailed = True
-				print("non-active user")
 		else:
 			loginFailed = True
-			print("incorrect login")
 
 	return render(request, 'app/login.html', {"loginFailed":loginFailed})
 
@@ -86,10 +80,8 @@ def register(request):
 		username = data['username']
 
 		u = User.objects.filter(username=username)
-		print(u)
 
 		if not u.exists():
-			print("OK")
 
 			first_name = data['firstname']
 			last_name = data['lastname']
@@ -287,8 +279,6 @@ def inventory(request):
 def status(request):	
 	if request.method == 'POST':
 		invoice_id = int(request.POST['invoice_id'])
-		print (invoice_id)
-		print (request)
 		invoice = Invoice.objects.get(id=invoice_id)
 		invoice.complete_invoice()
 
