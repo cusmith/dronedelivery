@@ -6,10 +6,18 @@
 {% block content %}
 	
 
-WELCOME TO DRONE DELIVERY
-
-** FANCY SPLASH!!! **
-
+Welcome to the Drone Delivery Service Homepage
+<br><br>
+This was created by Curtis Smith, Logan Kearns, Matthew Clarkson and Daniel Rebain for the Csc370 Databases course at Uvic.
+<br><br>
+{% if request.user.is_authenticated %}
+You are already logged in, please head to the <a href='account'>account page.</a>
+{% else %}
+If you already have an account, please head to the <a href='login'>log in page.</a>
+<br><br>
+If not, head to the <a href='register'>registration page</a> to create one.
+{% endif %}
+<br><br>
 
 
 {% endblock %}

@@ -158,7 +158,7 @@ def logoutUser(request):
 def checkout(request):
 	userid = request.user
 	try:
-		cart_invoice = Invoice.objects.filter(status='pending').get(user=userid)
+		cart_invoice = Invoice.objects.filter(status=Invoice.STATUS_PENDING).get(user=userid)
 	except Invoice.DoesNotExist:
 		context = {'cart_items': [], 'subtotal': 0, 'tax':0, 'total':0}
 		return render(request, 'app/checkout.html', context)
@@ -184,15 +184,10 @@ def checkout(request):
 				new_count = int(request.POST[quantity_str])
 				
 				if new_count > count:
-					#todo Get appropriate drone
-					newDrone = Drone(status='Idle', location='home')
-					newDrone.save()
 
 					#adding items of this type
 					for i in range(new_count - count):
-						inv_item = InvoiceItem(invoice=cart_invoice, 
-									drone=newDrone, 
-									inventory_type=intype)
+						inv_item = InvoiceItem(invoice=cart_invoice, inventory_type=intype)
 						inv_item.save()
 					intype.stock_count -= (new_count - count)
 					intype.save()

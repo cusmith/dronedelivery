@@ -53,8 +53,6 @@ class Invoice(models.Model):
 
 		#Get drones for the order 
 		drone = Drone.assign_drone()
-		if not drone:
-			return False
 
 		invoice_items = InvoiceItem.objects.filter(invoice=self)
 		for item in invoice_items:
@@ -146,9 +144,10 @@ class Drone(models.Model):
 			assign_drone = available_drones[0]
 			assign_drone.status = Drone.STATUS_DELIVERING
 			assign_drone.save()
-			return assign_drone
 		else:
-			return None
+			assign_drone = Drone(status=Drone.STATUS_IDLE, location=Drone.HOME)
+			assign_drone.save()
+		return assign_drone
 
 class InventoryType(models.Model):
 	product_name = models.CharField(max_length=50)
