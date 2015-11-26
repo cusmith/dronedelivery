@@ -306,7 +306,7 @@ def details(request, invoice=None):
 		
 	context = {		
 		'invoice_id': invoice		
-	}		
+	}
 	return render(request, 'app/details.html', context)
 
 # Other
