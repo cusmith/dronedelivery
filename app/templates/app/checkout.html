@@ -72,7 +72,31 @@
 		</table>
 		<input class='input-box' type="submit" name='submit' value='remove selected'>
 		<input class='input-box' type="submit" name='submit' value='update quantities'>
-		<input class='input-box' type="submit" name='submit' value='confirm order' style='float:right;'>
+		<input id='confirm-order' class='input-box' type="submit" name='submit' value='confirm order' style='float:right;'>
+		<script type='text/javascript'>
+
+var locationDetermined = false;
+
+$('#confirm-order').click(function(e) {
+
+	if (locationDetermined)
+		return;
+
+	e.preventDefault();
+	e.stopPropagation();
+
+	var pos = navigator.geolocation.getCurrentPosition(function() {
+		locationDetermined = true;
+		$('#confirm-order').click();
+	},function(err) {
+		console.log("Unable to determine location. Please ensure geolocation is allowed.");
+		locationDetermined = true;
+		$('#confirm-order').click();
+	});
+
+
+});
+		</script>
 		</form>
 
 	{% else %}
