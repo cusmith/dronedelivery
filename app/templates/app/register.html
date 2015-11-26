@@ -25,13 +25,13 @@
 		<tr><td>
 			<div class='registration-item'>
 				Email Address
-				<input id='email-box' class='registration-input' type='text' name='email' pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" oninvalid="try{setCustomValidity('Please enter a valid email address.')" onchange="setCustomValidity('')}catch(e){}" required>
+				<input id='email-box' class='registration-input' type='text' name='email' pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" oninvalid="setCustomValidity('Please enter a valid email address.')" onchange="setCustomValidity('')}catch(e){}" required>
 			</div>
 		</td></tr>
 		<tr><td>
 			<div class='registration-item-half'>
 				Username
-				<input id='username-box' class='registration-input' type='text' pattern="[A-Za-z0-9.-]+{6,}$" name='username' oninvalid="try{setCustomValidity('Please enter a username that is at least 6 characters long and only contains letters, numbers, hyphens, and periods.')" onchange="setCustomValidity('')}catch(e){}" required>
+				<input id='username-box' class='registration-input' type='text' pattern="[A-Za-z0-9.-]+{6,}$" name='username' oninvalid="setCustomValidity('Please enter a username that is at least 6 characters long and only contains letters, numbers, hyphens, and periods.')" onchange="setCustomValidity('')}catch(e){}" required>
 			</div>
 			<div class='registration-item-half'>
 				
@@ -48,7 +48,7 @@
 		<tr><td>
 			<div class='registration-item-half'>
 				Password
-				<input id='password-box' class='registration-input' type='password' name='password' pattern="[A-Za-z0-9]+{6,}$" oninvalid="try{setCustomValidity('Please enter a password that is at least 6 characters long and only contains letters and numbers.')" onchange="setCustomValidity('')}catch(e){}" required>
+				<input id='password-box' class='registration-input' type='password' name='password' pattern="[A-Za-z0-9]+{6,}$" oninvalid="setCustomValidity('Please enter a password that is at least 6 characters long and only contains letters and numbers.')" onchange="setCustomValidity('')}catch(e){}" required>
 			</div>
 			<div class='registration-item-half'>
 				<div class='registration-item-desc'>
@@ -74,7 +74,7 @@ $('#password-box').keypress(function() {
 		<tr><td>
 			<div class='registration-item-half'>
 				Credit Card Number
-				<input id='ccn-box' class='registration-input' type='text' name='ccn' pattern="[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}$" oninvalid="try{setCustomValidity('Please enter a valid credit card number (\'1234 1234 1234 1234\').')" onchange="setCustomValidity('')}catch(e){}" required>
+				<input id='ccn-box' class='registration-input' type='text' name='ccn' pattern="[0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}$" oninvalid="setCustomValidity('Please enter a valid credit card number (\'1234 1234 1234 1234\').')" onchange="setCustomValidity('')}catch(e){}" required>
 			</div>
 			<div class='registration-item-half'>
 				Expiry Date
